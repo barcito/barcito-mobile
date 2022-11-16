@@ -1,6 +1,6 @@
-import { View, Text } from "react-native-ui-lib"
+import { View, Text } from "react-native"
 
-export default Associate = () => {
+const Associate = () => {
 
     return (
         <View>
@@ -8,3 +8,5 @@ export default Associate = () => {
         </View>
     );
 }
+
+export default Associate;

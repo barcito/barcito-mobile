@@ -6,7 +6,7 @@ import Barcitos from "../screens/ordering/Barcitos";
 
 const Stack = createNativeStackNavigator();
 
-export default OrderingNavigator = () => {
+const OrderingNavigator = () => {
     
     return(
         <Stack.Navigator>
@@ -17,3 +17,5 @@ export default OrderingNavigator = () => {
         </Stack.Navigator>
     );
 }
+
+export default OrderingNavigator;

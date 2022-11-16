@@ -1,6 +1,6 @@
-import { View, Text } from "react-native-ui-lib"
+import { View, Text } from "react-native"
 
-export default User = () => {
+const User = () => {
 
     return (
         <View>
@@ -8,3 +8,5 @@ export default User = () => {
         </View>
     );
 }
+
+export default User;

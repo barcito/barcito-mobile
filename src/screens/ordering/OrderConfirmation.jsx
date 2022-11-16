@@ -1,6 +1,9 @@
-import { View, Text } from "react-native-ui-lib"
+import { useNavigation } from "@react-navigation/native";
+import { View, Text, Button } from "react-native"
 
-export default OrderConfirmation = () => {
+const OrderConfirmation = () => {
+
+    const navigation = useNavigation();
 
     return (
         <View>
@@ -9,3 +12,5 @@ export default OrderConfirmation = () => {
         </View>
     );
 }
+
+export default OrderConfirmation;

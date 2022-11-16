@@ -1,6 +1,9 @@
+import { useNavigation } from "@react-navigation/native";
 import { View, Text, Button } from "react-native"
 
-export default Categories = () => {
+const Categories = () => {
+
+    const navigation = useNavigation();
 
     return (
         <View>
@@ -9,3 +12,5 @@ export default Categories = () => {
         </View>
     );
 }
+
+export default Categories;

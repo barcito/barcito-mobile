@@ -1,6 +1,6 @@
-import { View, Text } from "react-native-ui-lib"
+import { View, Text } from "react-native"
 
-export default OrderDetail = () => {
+const OrderDetail = () => {
 
     return (
         <View>
@@ -8,3 +8,5 @@ export default OrderDetail = () => {
         </View>
     );
 }
+
+export default OrderDetail;

@@ -4,7 +4,7 @@ import Associate from '../screens/profile/Associate';
 
 const Stack = createNativeStackNavigator();
 
-export default ProfileNavigator = () => {
+const ProfileNavigator = () => {
     
     return(
         <Stack.Navigator>
@@ -13,3 +13,5 @@ export default ProfileNavigator = () => {
         </Stack.Navigator>
     );
 }
+
+export default ProfileNavigator;

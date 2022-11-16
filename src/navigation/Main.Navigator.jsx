@@ -5,7 +5,7 @@ import HistoryNavigator from './History.Navigator';
 
 const Tabs = createBottomTabNavigator();
 
-export default MainNavigator = () =>{
+const MainNavigator = () =>{
 
     return(
         <Tabs.Navigator>
@@ -15,3 +15,5 @@ export default MainNavigator = () =>{
         </Tabs.Navigator>
     )
 }
+
+export default MainNavigator;

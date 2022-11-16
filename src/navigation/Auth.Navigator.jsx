@@ -5,7 +5,7 @@ import Welcome from "../screens/auth/Welcome";
 
 const Stack = createNativeStackNavigator();
 
-export default AuthNavigator = () => {
+const AuthNavigator = () => {
     
     return(
         <Stack.Navigator>
@@ -15,3 +15,5 @@ export default AuthNavigator = () => {
         </Stack.Navigator>
     );
 }
+
+export default AuthNavigator;

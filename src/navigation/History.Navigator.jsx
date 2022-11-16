@@ -4,7 +4,7 @@ import OrderDetail from '../screens/history/OrderDetail';
 
 const Stack = createNativeStackNavigator();
 
-export default HistoryNavigator = () => {
+const HistoryNavigator = () => {
     
     return(
         <Stack.Navigator>
@@ -13,3 +13,5 @@ export default HistoryNavigator = () => {
         </Stack.Navigator>
     );
 }
+
+export default HistoryNavigator;
