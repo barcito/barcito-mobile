@@ -2,8 +2,8 @@ import { View, Text, Button, StyleSheet, Pressable } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
-import { Picker } from '@react-native-picker/picker';
 import CustomInput from "../../components/atoms/CustomInput";
+import SelectInput from "../../components/atoms/SelectInput";
 import { AuthAPI } from "../../api/AuthAPI";
 
 const Register = () => {
@@ -11,6 +11,7 @@ const Register = () => {
 
     const handleSignUp = async (userData) => {
         try {
+            console.log(userData);
             const response = await AuthAPI.signUp(userData);
             if (response) {
                 navigation.navigate('Auth', { screen: 'Welcome' });
@@ -33,8 +34,8 @@ const Register = () => {
         dni: yup
             .number()
             .required('El dni es requerido'),
-        academicUnit: yup
-            .string()
+        academicUnitId: yup
+            .number()
             .required('La unidad academica es requerida'),
         email: yup
             .string()
@@ -60,7 +61,7 @@ const Register = () => {
                         surname: '',
                         phone: '',
                         dni: '',
-                        academicUnit: '',
+                        academicUnitId: '',
                         email: '',
                         password: ''
                     }}
@@ -91,17 +92,10 @@ const Register = () => {
                                 placeholder='DNI'
                                 keyboardType='numeric'
                             />
-                            <Pressable>
-                            <Picker
-                                style={{ width: 250 }} // ???????????????
-                                selectedValue={'FAIN'}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    console.log(itemValue)
-                                }>
-                                <Picker.Item label="Facultad de Informática" value="FAI" />
-                                <Picker.Item label="Facultad de Ingenieria" value="FAIN" />
-                            </Picker>
-                            </Pressable>
+                            <Field
+                                component={SelectInput}
+                                name='academicUnitId'
+                            />
                             <Field
                                 component={CustomInput}
                                 name='email'
