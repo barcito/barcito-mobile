@@ -1,13 +1,15 @@
+import { DeviceEventEmitter } from "react-native";
+
 const eventBus = {
     on(event, callback) {
-        document.addEventListener(event, (e) => callback(e.detail));
+        DeviceEventEmitter.addListener(event, (data) => callback(data));
     },
     dispatch(event, data) {
-        document.dispatchEvent(new CustomEvent(event, { detail: data }));
+        DeviceEventEmitter.emit(event, data);
     },
-    remove(event, callback) {
-        document.removeEventListener(event, callback);
-    },
-};
+    remove(event){ 
+        DeviceEventEmitter.removeAllListeners(event);
+    }
+}
 
-export default eventBus
+export default eventBus;
