@@ -1,14 +1,13 @@
-import React from 'react'
-import { Text, TextInput, StyleSheet } from 'react-native'
+import { Text, TextInput, StyleSheet } from 'react-native';
 
 const CustomInput = (props) => {
   const {
     field: { name, onBlur, onChange, value },
     form: { errors, touched, setFieldTouched },
     ...inputProps
-  } = props
+  } = props;
 
-  const hasError = errors[name] && touched[name]
+  const hasError = errors[name] && touched[name];
 
   return (
     <>
@@ -27,7 +26,7 @@ const CustomInput = (props) => {
       />
       {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -48,6 +47,6 @@ const styles = StyleSheet.create({
   errorInput: {
     borderColor: 'red',
   }
-})
+});
 
-export default CustomInput
+export default CustomInput;

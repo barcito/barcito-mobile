@@ -1,33 +1,37 @@
-import { Text, TextInput, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
-const CustomInput = (props) => {
+const SelectInput = (props) => {
   const {
     field: { name, onBlur, onChange, value },
     form: { errors, touched, setFieldTouched },
     ...inputProps
-  } = props
+  } = props;
 
-  const hasError = errors[name] && touched[name]
+  const hasError = errors[name] && touched[name];
 
   return (
     <>
-        
-      <TextInput
+      <Picker
         style={[
           styles.textInput,
           hasError && styles.errorInput
         ]}
-        value={value}
-        onChangeText={(text) => onChange(name)(text)}
+        selectedValue={value}
+        onValueChange={(itemValue) => onChange(name)(itemValue)}
         onBlur={() => {
           setFieldTouched(name)
           onBlur(name)
         }}
         {...inputProps}
-      />
+      >
+          <Picker.Item enabled={false} label="Unidad academica" value='' />
+          <Picker.Item label="Facultad de Informática" value='1' />
+          <Picker.Item label="Facultad de Ingenieria" value='2' />
+      </Picker>
       {hasError && <Text style={styles.errorText}>{errors[name]}</Text>}
     </>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -48,6 +52,6 @@ const styles = StyleSheet.create({
   errorInput: {
     borderColor: 'red',
   }
-})
+});
 
-export default CustomInput
+export default SelectInput;
