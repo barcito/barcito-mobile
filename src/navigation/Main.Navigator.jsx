@@ -9,7 +9,7 @@ const MainNavigator = () =>{
 
     return(
         <Tabs.Navigator>
-            <Tabs.Screen name="Home" component={OrderingNavigator} />
+            <Tabs.Screen name="Home" component={OrderingNavigator} options={{ headerShown: false }} />
             <Tabs.Screen name="Profile" component={ProfileNavigator} />
             <Tabs.Screen name="Order History" component={HistoryNavigator} />
         </Tabs.Navigator>
