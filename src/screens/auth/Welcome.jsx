@@ -1,26 +1,37 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
-import { View, Text, Button } from "react-native"
+import { Image } from "react-native";
+import Onboarding from "react-native-onboarding-swiper";
 
 const Welcome = () => {
 
-    const [email, setEmail] = useState('none');
-
     const navigation = useNavigation();
-    
-    const handlePress = async () => {
-        const res = await AsyncStorage.getItem('email');
-        setEmail(res);
-    }
 
-    return (
-        <View>
-            <Text>Welcome</Text>
-            <Text>{email}</Text>
-            <Button title="get email" onPress={() => handlePress() } />
-            <Button title="Explore" onPress={() => navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos' } }) } />
-        </View>
+    return(
+        <Onboarding
+            onDone={() => navigation.navigate('Auth', { screen: 'Register' })}
+            onSkip={() => navigation.navigate('Auth', { screen: 'Register' })}
+            imageContainerStyles={{  }}
+            pages={[
+            {
+                backgroundColor: '#fff',
+                image: <Image />,
+                title: 'Onboarding',
+                subtitle: 'Done with React Native Onboarding Swiper',
+            },
+            {
+                backgroundColor: '#fe6e58',
+                image: <Image />,
+                title: 'The Title',
+                subtitle: 'This is the subtitle that sumplements the title.',
+            },
+            {
+                backgroundColor: '#999',
+                image: <Image />,
+                title: 'Triangle',
+                subtitle: "Beautiful, isn't it?",
+            },
+            ]}
+        />
     );
 }
 
