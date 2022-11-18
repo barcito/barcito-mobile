@@ -4,6 +4,7 @@ import { Formik, Field } from "formik";
 import * as yup from 'yup';
 import CustomInput from "../../components/atoms/CustomInput";
 import SelectInput from "../../components/atoms/SelectInput";
+import CustomToast from "../../components/atoms/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
 
 const Register = () => {
@@ -14,10 +15,10 @@ const Register = () => {
             console.log(userData);
             const response = await AuthAPI.signUp(userData);
             if (response) {
-                navigation.navigate('Auth', { screen: 'Welcome' });
+                navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos' } });
             }
         } catch (e) {
-            console.log(e);
+            CustomToast(e);
         }
     }
 

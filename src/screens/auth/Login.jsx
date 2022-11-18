@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
 import CustomInput from "../../components/atoms/CustomInput";
+import CustomToast from "../../components/atoms/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
 
 const Login = () => {
@@ -12,10 +13,10 @@ const Login = () => {
         try {
             const response = await AuthAPI.signIn(credentials);
             if(response){
-                navigation.navigate('Auth', { screen: 'Welcome' });
+                navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos '} });
             }
         } catch (e) {
-            console.log(e);
+            CustomToast(e);
         }
     }
 
