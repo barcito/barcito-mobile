@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ListItem, SearchBar } from "@rneui/themed";
 import { FlatList, Pressable } from "react-native";
+import { OrderingContext } from "../../context/OrderingContext";
 
 const CATS = [
     { id: 1, description: 'Category 1', barcitoId: 1 },
@@ -19,11 +20,11 @@ const CATS = [
 ]
 
 const Categories = () => {
-    const { params } = useRoute();
+    const { barcitoId } = useContext(OrderingContext);
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
 
-    const cates = CATS.filter( (cat) => cat.barcitoId === params.barcitoId);
+    const cates = CATS.filter( (cat) => cat.barcitoId === barcitoId);
 
     const updateSearch = (searchValue) =>{
         setSearch(searchValue);

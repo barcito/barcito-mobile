@@ -3,7 +3,8 @@ import { makeStyles, Tile, SearchBar, Image, Text } from "@rneui/themed";
 import { View, ScrollView, ActivityIndicator } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { OrderingContext } from "../../context/OrderingContext";
 
 const BARS = [
     { id: 1, name: 'Barcito FAI', imagePath: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Half_Dome_from_Glacier_Point%2C_Yosemite_NP_-_Diliff.jpg/320px-Half_Dome_from_Glacier_Point%2C_Yosemite_NP_-_Diliff.jpg', academicUnit: {description: 'Facultad de Informatica'} },
@@ -15,6 +16,7 @@ const BARS = [
 
 const Barcitos = () => {
     const styles = useStyles();
+    const { setBarcitoId } = useContext(OrderingContext);
     const { data, isLoading } = useQuery(['barcitos'], async () => BarcitoAPI.getAllBarcitos());
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
@@ -24,9 +26,9 @@ const Barcitos = () => {
     }
 
     const onTilePress = (barcitoId) => {
+        setBarcitoId(barcitoId);
         navigation.navigate('Home', {
-            screen: 'Categories',
-            params: { barcitoId }
+            screen: 'Categories'
         })
     }
 
@@ -48,6 +50,7 @@ const Barcitos = () => {
                 { barcitoList.map((bar, i)=> {
                     return (
                         <Tile
+                            key={bar.id}
                             imageSrc={{ uri: bar.imagePath }}
                             title={bar.name}
                             titleStyle={{ fontSize: 20, textAlign: 'center', paddingBottom: 5 }}
