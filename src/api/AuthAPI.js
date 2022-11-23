@@ -9,6 +9,7 @@ export const AuthAPI = {
             data: userData
         });
         if(response.status === 201){
+            await AsyncStorage.setItem('user-id', `${response.data.id}`);
             await AsyncStorage.setItem('email', response.data.email);
             await AsyncStorage.setItem("academic-unit", `${response.data.academicUnit}`);
         }
@@ -23,6 +24,7 @@ export const AuthAPI = {
         });
 
         if(response.status === 201){
+            await AsyncStorage.setItem('user-id', `${response.data.id}`);
             await AsyncStorage.setItem("email", response.data.email);
             await AsyncStorage.setItem("academic-unit", `${response.data.academicUnit}`);
         }
