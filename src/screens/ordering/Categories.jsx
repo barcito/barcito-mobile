@@ -1,7 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ListItem, SearchBar } from "@rneui/themed";
-import { FlatList, Pressable } from "react-native";
+import { Alert, FlatList, Pressable } from "react-native";
 import { OrderingContext } from "../../context/OrderingContext";
 
 const CATS = [
@@ -20,9 +20,32 @@ const CATS = [
 ]
 
 const Categories = () => {
-    const { barcitoId } = useContext(OrderingContext);
+    const { barcitoId, orderedProducts, onClean } = useContext(OrderingContext);
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
+    
+    useEffect( () => {
+        navigation.addListener('beforeRemove', (e) => {
+            if(!orderedProducts.length > 0){
+                return;
+            }
+            e.preventDefault();
+            Alert.alert(
+                '¿Cancelar pedido?',
+                'Si querés volver a la pantalla de barcitos, se quitarán los productos del pedido actual.',
+                [
+                    {
+                        text: 'Continuar pedido', style: 'cancel', onPress: () => {}
+                    },
+                    {
+                        text: 'Cancelar pedido',
+                        style: 'destructive',
+                        onPress: () => { onClean(); navigation.dispatch(e.data.action) }
+                    }
+                ]
+            );
+        });
+    }, [navigation, orderedProducts]);
 
     const cates = CATS.filter( (cat) => cat.barcitoId === barcitoId);
 
@@ -30,10 +53,10 @@ const Categories = () => {
         setSearch(searchValue);
     }
 
-    const onPressCategory = (categoryId) => {
+    const onPressCategory = (category) => {
         navigation.navigate('Home', {
             screen: 'Products',
-            params: { categoryId }
+            params: { categoryId: category.id, categoryName: category.description }
         })
     }
 
@@ -58,7 +81,7 @@ const Categories = () => {
             <FlatList
                 data={categoriesList}
                 renderItem={({item}) => 
-                    <Pressable onPress={() => onPressCategory(item.id)}>
+                    <Pressable onPress={() => onPressCategory(item)}>
                         <ListItem style={{ marginBottom: 5 }}>
                             <ListItem.Content>
                                 <ListItem.Title>{item.description}</ListItem.Title>

@@ -1,6 +1,8 @@
 import { createContext, useState } from "react";
 
-export const OrderingContext = createContext();
+export const OrderingContext = createContext({
+    orderedProducts: []
+});
 
 export const OrderingContextProvider = ({children}) => {
 
@@ -37,7 +39,7 @@ export const OrderingContextProvider = ({children}) => {
         setOrderedProducts(productList);
     }
 
-    const cleanProducts = () => {
+    const clearProducts = () => {
         setOrderedProducts([]);
     }
 
@@ -55,7 +57,7 @@ export const OrderingContextProvider = ({children}) => {
             onUpdate: updateQuantity,
             onRemove: removeQuantity,
             onRemoveAll: removeAllQuantity,
-            onClean: cleanProducts,
+            onClean: clearProducts,
             isPresent
         }}>
             {children}

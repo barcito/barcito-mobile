@@ -14,7 +14,7 @@ const Products = () => {
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
 
-    const updateSearch = (searchValue) =>{
+    const updateSearch = (searchValue) => {
         setSearch(searchValue);
     }
 
@@ -46,34 +46,35 @@ const Products = () => {
                 value={search}
                 round={true}
             />
-            <View style={{ flexDirection: 'row', justifyContent: 'center'}}>
-                <Text>Esta viendo TODOS los productos</Text>
-                <Button>Cambiar</Button>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Text>{params.categoryId === 0 ? 'Esta viendo TODOS los productos' : `Está viendo los productos de la categoria ${params.categoryName}`}</Text>
+                <Button onPress={() => navigation.navigate('Home', { screen: 'Categories' })}>Cambiar</Button>
             </View>
             <FlatList
                 data={productList}
-                renderItem={({item}) => {
+                renderItem={({ item }) => {
                     const prodOnCart = isPresent(item.id);
-                    return(item.categories.id === params.categoryId &&
-                    <Card>
-                        <Card.Title>{item.description}</Card.Title>
-                        <Card.Image source={{ uri: item.imagePath }} />
-                        <Text>Precio Final: ${ item.finalSellPrice }</Text>
-                        <Text>Precio Socio: ${ item.associatedSellPrice }</Text>
-                        {prodOnCart ? 
-                            (
-                                <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-                                    <Button onPress={
-                                        () => prodOnCart.quantity > 1 ? handleOnRemove(item.id) : handleOnRemoveAll(item.id)
-                                    }>-</Button>
-                                    <Text>{prodOnCart.quantity}</Text>
-                                    <Button onPress={() => handleOnUpdate(item.id)}>+</Button>
-                                </View>
-                            )
-                            :
-                            <Button onPress={() => handleOnAdd(item.id)}>Agregar al pedido</Button>
-                        }
-                    </Card>)}
+                    return (item.categories.id === params.categoryId &&
+                        <Card>
+                            <Card.Title>{item.description}</Card.Title>
+                            <Card.Image source={{ uri: item.imagePath }} />
+                            <Text>Precio Final: ${item.finalSellPrice}</Text>
+                            <Text>Precio Socio: ${item.associatedSellPrice}</Text>
+                            {prodOnCart ?
+                                (
+                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                                        <Button onPress={
+                                            () => prodOnCart.quantity > 1 ? handleOnRemove(item.id) : handleOnRemoveAll(item.id)
+                                        }>-</Button>
+                                        <Text>{prodOnCart.quantity}</Text>
+                                        <Button onPress={() => handleOnUpdate(item.id)}>+</Button>
+                                    </View>
+                                )
+                                :
+                                <Button onPress={() => handleOnAdd(item.id)}>Agregar al pedido</Button>
+                            }
+                        </Card>)
+                }
                 }
                 keyExtractor={(prod) => prod.id}
             />
