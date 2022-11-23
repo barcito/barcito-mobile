@@ -8,7 +8,7 @@ const HistoryNavigator = () => {
     
     return(
         <Stack.Navigator>
-            <Stack.Screen name="OrderHistory" component={OrderHistory} />
+            <Stack.Screen name="OrderList" component={OrderHistory} />
             <Stack.Screen name="OrderDetail" component={OrderDetail} />
         </Stack.Navigator>
     );

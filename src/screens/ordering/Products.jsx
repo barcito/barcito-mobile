@@ -18,10 +18,8 @@ const Products = () => {
         setSearch(searchValue);
     }
 
-    const handleOnAdd = (productId) => {
-        const product = { id: productId, quantity: 1 };
-        onAdd(product);
-        console.log(orderedProducts);
+    const handleOnAdd = (product) => {
+        onAdd({ ...product, quantity: 1 });
     }
 
     const handleOnUpdate = (productId) => {
@@ -71,7 +69,7 @@ const Products = () => {
                                     </View>
                                 )
                                 :
-                                <Button onPress={() => handleOnAdd(item.id)}>Agregar al pedido</Button>
+                                <Button onPress={() => handleOnAdd(item)}>Agregar al pedido</Button>
                             }
                         </Card>)
                 }

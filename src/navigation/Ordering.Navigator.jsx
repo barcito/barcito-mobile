@@ -7,11 +7,12 @@ import { OrderingContext, OrderingContextProvider } from "../context/OrderingCon
 import { Button, Text } from "@rneui/themed";
 import { useContext } from "react";
 import { View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
 const OrderingNavigator = () => {
-
+    const navigation = useNavigation();
     const { orderedProducts } = useContext(OrderingContext);
     
     return(
@@ -20,7 +21,7 @@ const OrderingNavigator = () => {
             headerRight: () => (
                 <View style={{ flexDirection: 'row', alignItems: 'center'}}>
                     <Text style={{ marginRight: 5 }}>Ver pedido</Text>
-                    <Button title={orderedProducts.length.toString()} />
+                    <Button title={orderedProducts.length.toString()} onPress={ () => navigation.navigate('Home', { screen: 'OrderConfirmation' }) } />
                 </View>
             )
         }}>

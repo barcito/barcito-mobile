@@ -16,7 +16,7 @@ const BARS = [
 
 const Barcitos = () => {
     const styles = useStyles();
-    const { setBarcitoId } = useContext(OrderingContext);
+    const { setBarcito } = useContext(OrderingContext);
     const { data, isLoading } = useQuery(['barcitos'], async () => BarcitoAPI.getAllBarcitos());
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
@@ -25,8 +25,8 @@ const Barcitos = () => {
         setSearch(searchValue);
     }
 
-    const onTilePress = (barcitoId) => {
-        setBarcitoId(barcitoId);
+    const onTilePress = (barcito) => {
+        setBarcito(barcito);
         navigation.navigate('Home', {
             screen: 'Categories'
         })
@@ -54,13 +54,12 @@ const Barcitos = () => {
                             imageSrc={{ uri: bar.imagePath }}
                             title={bar.name}
                             titleStyle={{ fontSize: 20, textAlign: 'center', paddingBottom: 5 }}
-                            onPress={() => onTilePress(bar.id)}
+                            onPress={() => onTilePress(bar)}
                         />
                     );
                 })
                 }
             </ScrollView>
-            {/* <Button title="Categories" onPress={() => navigation.navigate('Home', { screen: 'Categories' }) } /> */}
         </>
     );
 }

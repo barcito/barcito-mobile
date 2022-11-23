@@ -20,7 +20,7 @@ const CATS = [
 ]
 
 const Categories = () => {
-    const { barcitoId, orderedProducts, onClean } = useContext(OrderingContext);
+    const { barcito, orderedProducts, onClean } = useContext(OrderingContext);
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
     
@@ -47,7 +47,7 @@ const Categories = () => {
         });
     }, [navigation, orderedProducts]);
 
-    const cates = CATS.filter( (cat) => cat.barcitoId === barcitoId);
+    const cates = CATS.filter( (cat) => cat.barcitoId === barcito.id );
 
     const updateSearch = (searchValue) =>{
         setSearch(searchValue);

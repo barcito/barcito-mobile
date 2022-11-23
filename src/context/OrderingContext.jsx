@@ -1,12 +1,9 @@
 import { createContext, useState } from "react";
 
-export const OrderingContext = createContext({
-    orderedProducts: []
-});
+export const OrderingContext = createContext();
 
 export const OrderingContextProvider = ({children}) => {
-
-    const [barcitoId, setBarcitoId] = useState(null);
+    const [barcito, setBarcito] = useState(null);
     const [orderedProducts, setOrderedProducts] = useState([]);
 
     const addProduct = (product) => {
@@ -17,7 +14,7 @@ export const OrderingContextProvider = ({children}) => {
     const updateQuantity = (productId) => {
         const productList = orderedProducts.map( (product) => {
             if( product.id === productId ){
-                return {id: product.id, quantity: product.quantity += 1};
+                return { ...product, quantity: product.quantity += 1 };
             }
             return product;
         });
@@ -27,7 +24,7 @@ export const OrderingContextProvider = ({children}) => {
     const removeQuantity = (productId) => {
         const productList = orderedProducts.map( (product) => {
             if( product.id === productId ){
-                return {id: product.id, quantity: product.quantity -= 1};
+                return { ...product, quantity: product.quantity -= 1 };
             }
             return product;
         });
@@ -39,7 +36,7 @@ export const OrderingContextProvider = ({children}) => {
         setOrderedProducts(productList);
     }
 
-    const clearProducts = () => {
+    const clearOrder = () => {
         setOrderedProducts([]);
     }
 
@@ -50,14 +47,14 @@ export const OrderingContextProvider = ({children}) => {
 
     return(
         <OrderingContext.Provider value={{
-            barcitoId,
-            setBarcitoId,
+            barcito,
+            setBarcito,
             orderedProducts,
             onAdd: addProduct,
             onUpdate: updateQuantity,
             onRemove: removeQuantity,
             onRemoveAll: removeAllQuantity,
-            onClean: clearProducts,
+            onClean: clearOrder,
             isPresent
         }}>
             {children}

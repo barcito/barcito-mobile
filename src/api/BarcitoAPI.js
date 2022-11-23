@@ -26,5 +26,15 @@ export const BarcitoAPI = {
         });
 
         return response.data;
+    },
+
+    createOrder: async function(barcitoId, order) {
+        const response = await api.request({
+            url: `/orders/${barcitoId}`,
+            method: "POST",
+            data: order
+        });
+
+        return response.data;
     }
 }

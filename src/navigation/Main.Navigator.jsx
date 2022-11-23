@@ -13,7 +13,7 @@ const MainNavigator = () =>{
             <Tabs.Navigator>
                 <Tabs.Screen name="Home" component={OrderingNavigator} options={{ headerShown: false }} />
                 <Tabs.Screen name="Profile" component={ProfileNavigator} />
-                <Tabs.Screen name="Order History" component={HistoryNavigator} />
+                <Tabs.Screen name="OrderHistory" component={HistoryNavigator} />
             </Tabs.Navigator>
         </OrderingContextProvider>
     )
