@@ -1,29 +1,27 @@
 import { useCallback, useState } from "react";
 import { View, Text, Button } from "react-native";
-import DocumentPicker from 'react-native-document-picker';
+import * as DocumentPicker from 'expo-document-picker';
 
 const Associate = () => {
 
-    const [result, setResult] = useState();
+    const [selectedImage, setSelectedImage] = useState();
 
-    const handleDocumentSelection = useCallback(async () => {
-        try {
-            const response = await DocumentPicker.pickSingle({
-                presentationStyle: 'fullScreen',
-                copyTo: 'documentDirectory'
-            });
-            setResult(response);
-        } catch (err) {
-            console.warn(err);
+    
+    const pickImage = async () => {
+        const response = await DocumentPicker.getDocumentAsync();
+        if(!response.type === 'cancel'){
+            alert('No document selected');
+        }else{
+            setSelectedImage(response.uri);
         }
-    }, []);
+    }
 
     return (
         <View>
             <Text>Associate</Text>
             <Button
                 title="Seleccionar archivo"
-                onPress={handleDocumentSelection}
+                onPress={pickImage}
             />
         </View>
     );
