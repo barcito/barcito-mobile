@@ -1,15 +1,15 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
-import { View } from "react-native";
 import { Card, SearchBar, Text, Button } from "@rneui/themed";
 import mockProducts from '../../utils/mock-products';
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import { OrderingContext } from "../../context/OrderingContext";
-
-const PRODS = mockProducts;
+import { useQuery } from "react-query";
+import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Products = () => {
-    const { orderedProducts, onAdd, onUpdate, onRemove, onRemoveAll, isPresent } = useContext(OrderingContext);
+    const { barcito, onAdd, onUpdate, onRemove, onRemoveAll, isPresent } = useContext(OrderingContext);
+    const { data: prodList, isLoading } = useQuery(['products'], async () => BarcitoAPI.getProducts(barcito.id) );
     const { params } = useRoute();
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
@@ -34,7 +34,13 @@ const Products = () => {
         onRemoveAll(productId);
     }
 
-    const productList = search === '' ? PRODS : PRODS.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
+    if(isLoading){
+        return <View><Text>Is Loading</Text></View>;
+    }
+
+    console.log(prodList);
+
+    const productList = search === '' ? prodList : prodList.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
 
     return (
         <>
@@ -52,7 +58,7 @@ const Products = () => {
                 data={productList}
                 renderItem={({ item }) => {
                     const prodOnCart = isPresent(item.id);
-                    return (item.categories.id === params.categoryId &&
+                    return (/* item.categories.id === params.categoryId && */
                         <Card>
                             <Card.Title>{item.description}</Card.Title>
                             <Card.Image source={{ uri: item.imagePath }} />

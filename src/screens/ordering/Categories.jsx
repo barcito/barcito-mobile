@@ -1,26 +1,14 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ListItem, SearchBar } from "@rneui/themed";
-import { Alert, FlatList, Pressable } from "react-native";
+import { Alert, FlatList, Pressable, View, Text } from "react-native";
 import { OrderingContext } from "../../context/OrderingContext";
-
-const CATS = [
-    { id: 1, description: 'Category 1', barcitoId: 1 },
-    { id: 2, description: 'Category 2', barcitoId: 1 },
-    { id: 3, description: 'Category 3', barcitoId: 1 },
-    { id: 4, description: 'Category 4', barcitoId: 2 },
-    { id: 5, description: 'Category 5', barcitoId: 2 },
-    { id: 6, description: 'Category 6', barcitoId: 3 },
-    { id: 7, description: 'Category 7', barcitoId: 3 },
-    { id: 8, description: 'Category 8', barcitoId: 4 },
-    { id: 9, description: 'Category 9', barcitoId: 5 },
-    { id: 10, description: 'Category 10', barcitoId: 4 },
-    { id: 11, description: 'Category 11', barcitoId: 3 },
-    { id: 12, description: 'Category 12', barcitoId: 5 }
-]
+import { useQuery } from "react-query";
+import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Categories = () => {
     const { barcito, orderedProducts, onClean } = useContext(OrderingContext);
+    const { data: catList, isLoading } = useQuery(['categories'], async () => BarcitoAPI.getCategories(barcito.id));
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
     
@@ -46,20 +34,24 @@ const Categories = () => {
             );
         });
     }, [navigation, orderedProducts]);
-
-    const cates = CATS.filter( (cat) => cat.barcitoId === barcito.id );
-
+    
     const updateSearch = (searchValue) =>{
         setSearch(searchValue);
-    }
-
+    };
+    
     const onPressCategory = (category) => {
         navigation.navigate('Home', {
             screen: 'Products',
             params: { categoryId: category.id, categoryName: category.description }
         })
-    }
+    };
 
+    if(isLoading){
+        return <View><Text>Is Loading</Text></View>;
+    }
+    
+    const cates = catList.filter( (cat) => cat.barcitoId === barcito.id );
+    
     const categoriesList = search === '' ? cates : cates.filter((cat) => cat.description.toLowerCase().includes(search.toLowerCase()));
 
     return (

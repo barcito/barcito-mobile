@@ -3,7 +3,7 @@ import { api } from "./config/axiosConfig";
 export const BarcitoAPI = {
     getAllBarcitos: async function () {
         const response = await api.request({
-          url: "/barcitos/",
+          url: "barcitos/",
           method: "GET"
         });
     
@@ -12,7 +12,7 @@ export const BarcitoAPI = {
 
     getBarcito: async function (id) {
         const response = await api.request({
-        url: `/barcitos/${id}`,
+        url: `barcitos/${id}`,
         method: "GET"
         });
 
@@ -21,8 +21,17 @@ export const BarcitoAPI = {
 
     getCategories: async function(barcitoId) {
         const response = await api.request({
-            url: `/categories/${barcitoId}/products`,
+            url: `categories/${barcitoId}/products`,
             method: 'GET',
+        });
+
+        return response.data;
+    },
+
+    getProducts: async function(barcitoId) {
+        const response = await api.request({
+            url: `products/${barcitoId}`,
+            method: 'GET'
         });
 
         return response.data;
@@ -30,7 +39,7 @@ export const BarcitoAPI = {
 
     createOrder: async function(barcitoId, order) {
         const response = await api.request({
-            url: `/orders/${barcitoId}`,
+            url: `orders/${barcitoId}`,
             method: "POST",
             data: order
         });

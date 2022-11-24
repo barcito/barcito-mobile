@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export const AuthAPI = {
     signUp: async function(userData){
         const response = await api.request({
-            url: `/auth/signup`,
+            url: `auth/signup`,
             method: 'POST',
             data: userData
         });
@@ -18,7 +18,7 @@ export const AuthAPI = {
 
     signIn: async function(credentials){
         const response = await api.request({
-            url: `/auth/signin`,
+            url: `auth/signin`,
             method: 'POST',
             data: credentials
         });
@@ -35,14 +35,14 @@ export const AuthAPI = {
     signOut: async function () {
         await AsyncStorage.clear()
         const response = await api.request({
-          url: "/auth/logout",
+          url: "auth/logout",
           method: "GET"
         });
     },
 
     refresh: async function () {
         await api.request({
-            url: "/auth/refresh",
+            url: "auth/refresh",
             method: "GET"
         })
     }

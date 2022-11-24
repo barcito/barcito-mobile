@@ -20,7 +20,7 @@ const OrderConfirmation = () => {
             const response = await BarcitoAPI.createOrder(barcito.id, order);
             if(response){
                 onClean();
-                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderId: response.id } } });
+                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderCode: response.code } } });
             }
         } catch (e) {
             CustomToast(e);
