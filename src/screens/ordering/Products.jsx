@@ -9,8 +9,8 @@ import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Products = () => {
     const { barcito, onAdd, onUpdate, onRemove, onRemoveAll, isPresent } = useContext(OrderingContext);
-    const { data: prodList, isLoading } = useQuery(['products'], async () => BarcitoAPI.getProducts(barcito.id) );
     const { params } = useRoute();
+    const { data: prodList, isLoading } = useQuery(['products'], async () => BarcitoAPI.getProductsByCategory(barcito.id, params.categoryId) );
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
 
@@ -40,6 +40,8 @@ const Products = () => {
 
     const productList = search === '' ? prodList : prodList.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
 
+    console.log(productList);
+
     return (
         <>
             <SearchBar
@@ -56,7 +58,7 @@ const Products = () => {
                 data={productList}
                 renderItem={({ item }) => {
                     const prodOnCart = isPresent(item.id);
-                    return (/* item.categories.id === params.categoryId && */
+                    return(
                         <Card>
                             <Card.Title>{item.description}</Card.Title>
                             <Card.Image source={{ uri: item.imagePath }} />
@@ -75,9 +77,9 @@ const Products = () => {
                                 :
                                 <Button onPress={() => handleOnAdd(item)}>Agregar al pedido</Button>
                             }
-                        </Card>)
-                }
-                }
+                        </Card>
+                    );
+                }}
                 keyExtractor={(prod) => prod.id}
             />
         </>

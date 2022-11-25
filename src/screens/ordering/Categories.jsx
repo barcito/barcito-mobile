@@ -62,7 +62,7 @@ const Categories = () => {
                 value={search}
                 round={true}
             />
-            <Pressable onPress={() => onPressCategory(0)}>
+            <Pressable onPress={() => onPressCategory({ id: 0, description: 'TODO'})}>
                 <ListItem style={{ marginBottom: 5 }}>
                     <ListItem.Content>
                         <ListItem.Title>Todo</ListItem.Title>

@@ -41,7 +41,7 @@ const Barcitos = () => {
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
                 { barcitoList.map((bar, i)=> {
                     return (
-                        <View key={bar.id}>
+                        <View key={bar.id} style={{ backgroundColor: 'gray' }}>
                             <Tile
                                 imageSrc={{ uri: bar.imagePath }}
                                 title={bar.name}

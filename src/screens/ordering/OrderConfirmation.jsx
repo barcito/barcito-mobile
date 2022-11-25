@@ -20,6 +20,7 @@ const OrderConfirmation = () => {
             const response = await BarcitoAPI.createOrder(barcito.id, order);
             if(response){
                 onClean();
+                navigation.reset({ index: 0, routes: [ {name: 'Home' } ] }); // si pero no
                 navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderCode: response.code } } });
             }
         } catch (e) {
