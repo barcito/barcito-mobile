@@ -12,9 +12,11 @@ const OrderDetail = () => {
         return <View><Text>Is loading</Text></View>;
     }
 
+    console.log(data.products);
+
     return (
         <View>
-            <Text>OrderDetail</Text>
+            <Text>{data.code}</Text>
         </View>
     );
 }

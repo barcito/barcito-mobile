@@ -38,8 +38,6 @@ const Products = () => {
         return <View><Text>Is Loading</Text></View>;
     }
 
-    console.log(prodList);
-
     const productList = search === '' ? prodList : prodList.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
 
     return (

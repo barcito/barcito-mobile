@@ -1,10 +1,11 @@
-import { View, Text, TextInput, Button, Pressable, StyleSheet } from "react-native";
+import { View, Text, Button, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
 import CustomInput from "../../components/atoms/CustomInput";
 import CustomToast from "../../components/atoms/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
+import { Image } from "@rneui/themed";
 
 const Login = () => {
     const navigation = useNavigation();
@@ -31,11 +32,18 @@ const Login = () => {
     })
 
     return (
-        <View style={styles.container}>
+        <View>
+            <View style={styles.imageContainer}>
+                <Text style={{ fontSize: 50, fontStyle: 'italic', padding: 10 }}>Barcito</Text>
+                <Image source={require('../../../assets/barcito-big.png')} style={{ width: 400, height: 200 }}/>
+            </View>
             <View style={styles.loginContainer}>
                 <Text>Iniciar sesión</Text>
                 <Formik
-                    initialValues={{ email: '', password: '' }}
+                    initialValues={{
+                        email: '',
+                        password: ''
+                    }}
                     validationSchema={loginValidationSchema}
                     onSubmit={values => handleLogin(values)}
                 >
@@ -66,15 +74,17 @@ const Login = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    imageContainer: {
+        height: '50%',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
     },
     loginContainer: {
+        alignSelf: 'center',
         width: '80%',
         alignItems: 'center',
         backgroundColor: 'white',
+        marginTop: 50,
         padding: 10,
         elevation: 10,
         backgroundColor: '#e6e6e6'

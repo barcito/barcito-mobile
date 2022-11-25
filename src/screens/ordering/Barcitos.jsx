@@ -41,13 +41,15 @@ const Barcitos = () => {
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
                 { barcitoList.map((bar, i)=> {
                     return (
-                        <Tile
-                            key={bar.id}
-                            imageSrc={{ uri: bar.imagePath }}
-                            title={bar.name}
-                            titleStyle={{ fontSize: 20, textAlign: 'center', paddingBottom: 5 }}
-                            onPress={() => onTilePress(bar)}
-                        />
+                        <View key={bar.id}>
+                            <Tile
+                                imageSrc={{ uri: bar.imagePath }}
+                                title={bar.name}
+                                titleStyle={{ fontSize: 20, textAlign: 'center', paddingBottom: 5 }}
+                                onPress={() => onTilePress(bar)}
+                            />
+                            <Text style={{ textAlign: 'center'}}>{bar.location}</Text>
+                        </View>
                     );
                 })
                 }

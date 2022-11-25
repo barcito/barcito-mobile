@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, Pressable } from "react-native"
+import { View, Text, Button, StyleSheet, Pressable, ScrollView } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
@@ -6,6 +6,7 @@ import CustomInput from "../../components/atoms/CustomInput";
 import SelectInput from "../../components/atoms/SelectInput";
 import CustomToast from "../../components/atoms/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
+import { Image } from "@rneui/themed";
 
 const Register = () => {
     const navigation = useNavigation();
@@ -53,7 +54,11 @@ const Register = () => {
     })
 
     return (
-        <View style={styles.container}>
+        <View>
+            <View style={styles.imageContainer}>
+                <Text style={{ fontSize: 50, fontStyle: 'italic', padding: 10 }}>Barcito</Text>
+                <Image source={require('../../../assets/barcito-big.png')} style={{ width: 400, height: 200 }}/>
+            </View>
             <View style={styles.signUpContainer}>
                 <Text>Registrarse</Text>
                 <Formik 
@@ -122,12 +127,13 @@ const Register = () => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
+    imageContainer: {
+        height: '35%',
         justifyContent: 'center',
         alignItems: 'center'
     },
     signUpContainer: {
+        alignSelf: 'center',
         width: '80%',
         alignItems: 'center',
         backgroundColor: 'white',
