@@ -1,9 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import { Card, SearchBar, Text, Button } from "@rneui/themed";
-import mockProducts from '../../utils/mock-products';
 import { FlatList, View } from "react-native";
-import { OrderingContext } from "../../context/OrderingContext";
+import { OrderingContext } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 
@@ -39,8 +38,6 @@ const Products = () => {
     }
 
     const productList = search === '' ? prodList : prodList.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
-
-    console.log(productList);
 
     return (
         <>

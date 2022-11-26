@@ -29,8 +29,6 @@ export const BarcitoAPI = {
     },
 
     getProductsByCategory: async function(barcitoId, categoryId){
-        console.log(barcitoId);
-        console.log(categoryId)
         const url = categoryId === 0 ? `products/${barcitoId}` : `categories/${barcitoId}/products/${categoryId}`;
         const response = await api.request({
             url: url,

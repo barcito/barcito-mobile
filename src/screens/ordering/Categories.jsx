@@ -2,19 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ListItem, SearchBar } from "@rneui/themed";
 import { Alert, FlatList, Pressable, View, Text } from "react-native";
-import { OrderingContext } from "../../context/OrderingContext";
+import { OrderingContext } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Categories = () => {
-    const { barcito, orderedProducts, onClean } = useContext(OrderingContext);
+    const { barcito, isOrdering, onClean } = useContext(OrderingContext);
     const { data: catList, isLoading } = useQuery(['categories'], async () => BarcitoAPI.getCategories(barcito.id));
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
     
     useEffect( () => {
         navigation.addListener('beforeRemove', (e) => {
-            if(!orderedProducts.length > 0){
+            if(!isOrdering){
                 return;
             }
             e.preventDefault();
@@ -33,7 +33,7 @@ const Categories = () => {
                 ]
             );
         });
-    }, [navigation, orderedProducts]);
+    }, [navigation]);
     
     const updateSearch = (searchValue) =>{
         setSearch(searchValue);

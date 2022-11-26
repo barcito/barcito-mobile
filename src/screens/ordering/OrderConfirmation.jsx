@@ -4,7 +4,7 @@ import { Icon, Text, Button, ListItem, Image } from "@rneui/themed";
 import { useContext, useState } from "react";
 import { View, ScrollView, ImageBackground } from "react-native";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
-import { OrderingContext } from "../../context/OrderingContext";
+import { OrderingContext } from "../../context/OrderingState";
 
 const OrderConfirmation = () => {
     const { barcito, orderedProducts, onClean } = useContext(OrderingContext);
@@ -20,8 +20,8 @@ const OrderConfirmation = () => {
             const response = await BarcitoAPI.createOrder(barcito.id, order);
             if(response){
                 onClean();
-                navigation.reset({ index: 0, routes: [ {name: 'Home' } ] }); // si pero no
-                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderCode: response.code } } });
+                navigation.popToTop();
+                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderList', params: { orderCode: response.code } } });
             }
         } catch (e) {
             CustomToast(e);

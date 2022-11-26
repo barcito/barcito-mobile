@@ -3,7 +3,7 @@ import Categories from '../screens/ordering/Categories';
 import Products from "../screens/ordering/Products";
 import OrderConfirmation from "../screens/ordering/OrderConfirmation";
 import Barcitos from "../screens/ordering/Barcitos";
-import { OrderingContext, OrderingContextProvider } from "../context/OrderingContext";
+import { OrderingContext } from "../context/OrderingState";
 import { Button, Text } from "@rneui/themed";
 import { useContext } from "react";
 import { View } from "react-native";

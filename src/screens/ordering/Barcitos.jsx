@@ -4,7 +4,7 @@ import { View, ScrollView } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 import { useContext, useState } from "react";
-import { OrderingContext } from "../../context/OrderingContext";
+import { OrderingContext } from "../../context/OrderingState";
 
 const Barcitos = () => {
     const styles = useStyles();
