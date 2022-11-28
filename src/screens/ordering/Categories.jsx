@@ -2,38 +2,40 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { ListItem, SearchBar } from "@rneui/themed";
 import { Alert, FlatList, Pressable, View, Text } from "react-native";
-import { OrderingContext } from "../../context/OrderingState";
+import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Categories = () => {
-    const { barcito, isOrdering, onClean } = useContext(OrderingContext);
+    const { barcito, orderedProducts } = useOrdering();
+    const { onClean } = useOrderingDispatch();
     const { data: catList, isLoading } = useQuery(['categories'], async () => BarcitoAPI.getCategories(barcito.id));
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
     
     useEffect( () => {
-        navigation.addListener('beforeRemove', (e) => {
-            if(!isOrdering){
-                return;
-            }
-            e.preventDefault();
-            Alert.alert(
-                '¿Cancelar pedido?',
-                'Si querés volver a la pantalla de barcitos, se quitarán los productos del pedido actual.',
-                [
-                    {
-                        text: 'Continuar pedido', style: 'cancel', onPress: () => {}
-                    },
-                    {
-                        text: 'Cancelar pedido',
-                        style: 'destructive',
-                        onPress: () => { onClean(); navigation.dispatch(e.data.action) }
-                    }
-                ]
-            );
-        });
-    }, [navigation]);
+        if(orderedProducts.length > 0){
+            navigation.addListener('beforeRemove', (e) => {
+                e.preventDefault();
+                Alert.alert(
+                    '¿Cancelar pedido?',
+                    'Si querés volver a la pantalla de barcitos, se quitarán los productos del pedido actual.',
+                    [
+                        {
+                            text: 'Continuar pedido', style: 'cancel', onPress: () => {}
+                        },
+                        {
+                            text: 'Cancelar pedido',
+                            style: 'destructive',
+                            onPress: () => { onClean(); navigation.dispatch(e.data.action) }
+                        }
+                    ]
+                );
+            });
+        } else {
+            navigation.removeListener('beforeRemove');
+        }
+    }, [navigation, orderedProducts]);
     
     const updateSearch = (searchValue) =>{
         setSearch(searchValue);

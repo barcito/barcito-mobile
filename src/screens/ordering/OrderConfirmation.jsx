@@ -4,10 +4,11 @@ import { Icon, Text, Button, ListItem, Image } from "@rneui/themed";
 import { useContext, useState } from "react";
 import { View, ScrollView, ImageBackground } from "react-native";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
-import { OrderingContext } from "../../context/OrderingState";
+import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 
 const OrderConfirmation = () => {
-    const { barcito, orderedProducts, onClean } = useContext(OrderingContext);
+    const { barcito, orderedProducts } = useOrdering();
+    const { onClean } = useOrderingDispatch();
     const navigation = useNavigation();
 
     const doOrder = async () => {
@@ -20,7 +21,7 @@ const OrderConfirmation = () => {
             const response = await BarcitoAPI.createOrder(barcito.id, order);
             if(response){
                 onClean();
-                navigation.popToTop();
+                navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos' } });
                 navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderList', params: { orderCode: response.code } } });
             }
         } catch (e) {

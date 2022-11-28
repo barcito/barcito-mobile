@@ -2,12 +2,13 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
 import { Card, SearchBar, Text, Button } from "@rneui/themed";
 import { FlatList, View } from "react-native";
-import { OrderingContext } from "../../context/OrderingState";
+import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 
 const Products = () => {
-    const { barcito, onAdd, onUpdate, onRemove, onRemoveAll, isPresent } = useContext(OrderingContext);
+    const { barcito } = useOrdering();
+    const { onAdd, onUpdate, onRemove, onRemoveAll, isPresent } = useOrderingDispatch();
     const { params } = useRoute();
     const { data: prodList, isLoading } = useQuery(['products'], async () => BarcitoAPI.getProductsByCategory(barcito.id, params.categoryId) );
     const [search, setSearch] = useState('');

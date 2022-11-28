@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useContext, useReducer } from "react";
 import OrderingReducer from "./OrderingReducer";
 
 const initialState = {
@@ -6,7 +6,8 @@ const initialState = {
     orderedProducts: []
 };
 
-export const OrderingContext = createContext(initialState);
+export const OrderingContext = createContext(null);
+export const OrderingDispatchContext = createContext(null);
 
 export const OrderingProvider = ({ children }) => {
     const [state, dispatch] = useReducer(OrderingReducer, initialState);
@@ -57,24 +58,30 @@ export const OrderingProvider = ({ children }) => {
         return found;
     }
 
-    const isOrdering = state.orderedProducts.length > 0;
-
-    console.log(state.orderedProducts);
-
     return (
         <OrderingContext.Provider value={{
             barcito: state.barcito,
-            orderedProducts: state.orderedProducts,
-            setBarcito,
-            onAdd: addProduct,
-            onUpdate: updateQuantity,
-            onRemove: removeQuantity,
-            onRemoveAll: removeAllQuantity,
-            onClean: clearOrder,
-            isPresent,
-            isOrdering
+            orderedProducts: state.orderedProducts
         }}>
-            {children}
+            <OrderingDispatchContext.Provider value={{
+                setBarcito,
+                onAdd: addProduct,
+                onUpdate: updateQuantity,
+                onRemove: removeQuantity,
+                onRemoveAll: removeAllQuantity,
+                onClean: clearOrder,
+                isPresent,
+            }}>
+                {children}
+            </OrderingDispatchContext.Provider>
         </OrderingContext.Provider>
     );
+}
+
+export function useOrdering(){
+    return useContext(OrderingContext);
+}
+
+export function useOrderingDispatch(){
+    return useContext(OrderingDispatchContext);
 }

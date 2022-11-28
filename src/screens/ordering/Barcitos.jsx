@@ -3,12 +3,12 @@ import { makeStyles, Tile, SearchBar, Text } from "@rneui/themed";
 import { View, ScrollView } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
-import { useContext, useState } from "react";
-import { OrderingContext } from "../../context/OrderingState";
+import { useState } from "react";
+import { useOrderingDispatch } from "../../context/OrderingState";
 
 const Barcitos = () => {
     const styles = useStyles();
-    const { setBarcito } = useContext(OrderingContext);
+    const { setBarcito } = useOrderingDispatch();
     const { data: barList, isLoading } = useQuery(['barcitos'], async () => BarcitoAPI.getAllBarcitos());
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
