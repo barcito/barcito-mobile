@@ -1,5 +1,6 @@
 import { api } from "./config/axiosConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { subscribe } from "./SseAPI";
 
 export const AuthAPI = {
     signUp: async function(userData){
@@ -27,6 +28,7 @@ export const AuthAPI = {
             await AsyncStorage.setItem('user-id', `${response.data.id}`);
             await AsyncStorage.setItem("email", response.data.email);
             await AsyncStorage.setItem("academic-unit", `${response.data.academicUnit}`);
+            subscribe(response.data.id);
         }
 
         return response.data;
