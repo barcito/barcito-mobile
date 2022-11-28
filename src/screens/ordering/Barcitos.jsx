@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
 import { makeStyles, Tile, SearchBar, Text } from "@rneui/themed";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, Alert } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useOrderingDispatch } from "../../context/OrderingState";
+import { AuthAPI } from "../../api/AuthAPI";
 
 const Barcitos = () => {
     const styles = useStyles();
@@ -12,6 +13,26 @@ const Barcitos = () => {
     const { data: barList, isLoading } = useQuery(['barcitos'], async () => BarcitoAPI.getAllBarcitos());
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
+
+    useEffect( () => {
+        navigation.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            Alert.alert(
+                '¿Cerrar sesión?',
+                'Volverás a la página de login.',
+                [
+                    {
+                        text: 'Cancelar', style: 'cancel', onPress: () => {}
+                    },
+                    {
+                        text: 'Cerrar sesión',
+                        style: 'destructive',
+                        onPress: () => { AuthAPI.signOut(); navigation.dispatch(e.data.action) }
+                    }
+                ]
+            );
+        });
+    }, [navigation]);
 
     const updateSearch = (searchValue) => {
         setSearch(searchValue);
