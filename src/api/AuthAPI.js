@@ -13,6 +13,7 @@ export const AuthAPI = {
             await AsyncStorage.setItem('user-id', `${response.data.id}`);
             await AsyncStorage.setItem('email', response.data.email);
             await AsyncStorage.setItem("academic-unit", `${response.data.academicUnit}`);
+            subscribe(response.data.id);
         }
         return response.data;
     },
@@ -35,8 +36,14 @@ export const AuthAPI = {
     },
 
     signOut: async function () {
+        const userId = await AsyncStorage.getItem('user-id');
         await AsyncStorage.clear()
-        const response = await api.request({
+        await api.request({
+            url: `http://192.168.0.75:3000/api/sse/orderStatus/${userId}`,
+            method: "POST",
+            data: { message: 'Closing connection', type: 'close' }
+        })
+        await api.request({
           url: "auth/logout",
           method: "GET"
         });

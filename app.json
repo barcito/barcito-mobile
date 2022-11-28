@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "2ec24bf1-35d5-406e-b644-8530debf6c2b"
+      }
+    },
+    "owner": "raama"
   }
 }

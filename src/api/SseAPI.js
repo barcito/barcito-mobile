@@ -1,15 +1,35 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import EventSource from "react-native-sse";
 
 export function subscribe(userId) {
-    console.log('subscribing');
-    const subscription = new EventSource(`http://192.168.0.6:3000/api/sse/orderStatus/${userId}`);
+    const subscription = new EventSource(`http://192.168.0.75:3000/api/sse/orderStatus/${userId}`);
 
     subscription.addEventListener("open", (event) => {
         console.log("SSE connection opened");
     })
 
-    subscription.addEventListener("message", (event) => {
-        console.log("Message: " + event.data);
+    subscription.addEventListener("message", async (event) => {
+        const data = JSON.parse(event.data)
+        if(data.type === "close"){
+            subscription.close();
+        }
+        const token = await AsyncStorage.getItem('push-token');
+        const message = {
+            to: token,
+            sound: 'default',
+            title: data.type,
+            body: data.message
+        }
+
+        await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
     })
 
     subscription.addEventListener("error", (event) => {
