@@ -55,5 +55,15 @@ export const UserAPI = {
         });
 
         return response.data;
+    },
+
+    cancelOrder: async function(orderId){
+        const response = await api.request({
+            url: `orders/0/${orderId}`,
+            method: 'PATCH',
+            data: { status: 'Cancelado' }
+        });
+
+        return response.data;
     }
 }
