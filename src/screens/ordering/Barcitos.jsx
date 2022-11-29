@@ -6,6 +6,8 @@ import { BarcitoAPI } from "../../api/BarcitoAPI";
 import { useState, useEffect } from "react";
 import { useOrderingDispatch } from "../../context/OrderingState";
 import { AuthAPI } from "../../api/AuthAPI";
+import CustomModal from "../../components/CustomModal";
+import { Button } from "@rneui/base";
 
 const Barcitos = () => {
     const styles = useStyles();
@@ -13,6 +15,8 @@ const Barcitos = () => {
     const { data: barList, isLoading } = useQuery(['barcitos'], async () => BarcitoAPI.getAllBarcitos());
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
+    const [showMap, setShowMap] = useState(false);
+    const [barMap, setBarMap] = useState();
 
     useEffect( () => {
         navigation.addListener('beforeRemove', (e) => {
@@ -62,19 +66,23 @@ const Barcitos = () => {
             <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
                 { barcitoList.map((bar, i)=> {
                     return (
-                        <View key={bar.id} style={{ backgroundColor: 'gray' }}>
+                        <View key={bar.id} style={{ backgroundColor: 'black' }}>
                             <Tile
                                 imageSrc={{ uri: bar.imagePath }}
                                 title={bar.name}
-                                titleStyle={{ fontSize: 20, textAlign: 'center', paddingBottom: 5 }}
+                                titleStyle={{ color: 'white', fontSize: 20, textAlign: 'center' }}
                                 onPress={() => onTilePress(bar)}
                             />
-                            <Text style={{ textAlign: 'center'}}>{bar.location}</Text>
+                            <View style={styles.barFooter}>
+                                <Text style={styles.barName}>{bar.academicUnit.description}</Text>
+                                <Button title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
+                            </View>
                         </View>
                     );
                 })
                 }
             </ScrollView>
+            <CustomModal isVisible={showMap} setIsVisible={setShowMap} barcito={barMap} />
         </>
     );
 }
@@ -88,6 +96,14 @@ const useStyles = makeStyles((theme) => ({
         height: 200,
         backgroundColor: 'red',
         margin: 10
+    },
+    barFooter: {
+        justifyContent: 'space-around'
+    },
+    barName: {
+        textAlign: 'center',
+        fontSize: 15,
+        color: 'white'
     }
 }));
 
