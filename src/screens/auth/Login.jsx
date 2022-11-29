@@ -2,8 +2,8 @@ import { View, Text, Button, Pressable, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
-import CustomInput from "../../components/atoms/CustomInput";
-import CustomToast from "../../components/atoms/CustomToast";
+import CustomInput from "../../components/CustomInput";
+import CustomToast from "../../components/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
 import { Image } from "@rneui/themed";
 
@@ -17,7 +17,7 @@ const Login = () => {
                 navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos '} });
             }
         } catch (e) {
-            CustomToast(e);
+            CustomToast(e.message);
         }
     }
 

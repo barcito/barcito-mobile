@@ -3,9 +3,9 @@ import { View, Text, Button, StyleSheet } from "react-native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
 import { useQuery } from "react-query";
-import CustomToast from "../../components/atoms/CustomToast";
-import CustomInput from "../../components/atoms/CustomInput";
-import SelectInput from "../../components/atoms/SelectInput";
+import CustomToast from "../../components/CustomToast";
+import CustomInput from "../../components/CustomInput";
+import SelectInput from "../../components/SelectInput";
 import { UserAPI } from "../../api/UserAPI";
 import { useNavigation } from "@react-navigation/core";
 

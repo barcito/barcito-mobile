@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { View, Text, Button } from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import { UserAPI } from "../../api/UserAPI";
-import CustomToast from "../../components/atoms/CustomToast";
+import CustomToast from "../../components/CustomToast";
 
 const Associate = () => {
 

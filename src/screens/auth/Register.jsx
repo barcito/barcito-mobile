@@ -2,9 +2,9 @@ import { View, Text, Button, StyleSheet, Pressable, ScrollView } from "react-nat
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
-import CustomInput from "../../components/atoms/CustomInput";
-import SelectInput from "../../components/atoms/SelectInput";
-import CustomToast from "../../components/atoms/CustomToast";
+import CustomInput from "../../components/CustomInput";
+import SelectInput from "../../components/SelectInput";
+import CustomToast from "../../components/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
 import { Image } from "@rneui/themed";
 
