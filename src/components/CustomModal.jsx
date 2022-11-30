@@ -26,8 +26,8 @@ const CustomModal = ({ isVisible, setIsVisible, barcito }) => {
                                 latitude: +barcito.location.split(',')[0],
                                 longitude: +barcito.location.split(',')[1]
                             }}
-                            title="Barcito FAI"
-                            description="Barcito facultad de informática"
+                            title={barcito.name}
+                            description={barcito.academicUnit.description}
                         />
                     </MapView>
                 </View>
