@@ -1,12 +1,21 @@
 import { View, Text, FlatList, Pressable } from "react-native"
 import { ListItem } from "@rneui/themed";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { UserAPI } from "../../api/UserAPI";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
 
 const OrderHistory = () => {
+    const client = useQueryClient();
     const navigation = useNavigation();
-    const { data, isLoading } = useQuery(['userOrders'], async () => UserAPI.getAllOrders());
+    const [orderList, setOrderList] = useState();
+    const { isLoading } = useQuery(['userOrders'], () => (UserAPI.getAllOrders()), { onSuccess: (data) => setOrderList(data)});
+
+    useFocusEffect(
+        useCallback(() => {
+            return () => client.invalidateQueries(['userOrders']);
+        }, [])
+    );
 
     if(isLoading){
         return <View><Text>Is loading</Text></View>;
@@ -15,7 +24,7 @@ const OrderHistory = () => {
     return (
         <>
             <FlatList
-                data={data}
+                data={orderList}
                 renderItem={({item}) => 
                     <Pressable onPress={() => navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderCode: item.code } } })}>
                         <ListItem style={{ marginBottom: 5 }}>
