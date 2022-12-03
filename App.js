@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer, ThemeProvider } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AuthNavigator from './src/navigation/Auth.Navigator';
 import MainNavigator from './src/navigation/Main.Navigator';
 import 'react-native-gesture-handler';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { createTheme } from '@rneui/themed';
+import { ThemeProvider ,createTheme } from '@rneui/themed';
 import * as Notifications from 'expo-notifications';
 import { useState, useRef, useEffect } from 'react';
 import { registerForPushNotificationsAsync } from './src/utils/notifications';
@@ -23,12 +23,34 @@ const queryClient = new QueryClient();
 const Stack = createNativeStackNavigator();
 const theme = createTheme({
   lightColors: {
-    primary: '#e7e7e8'
+    primary: '#6200EE',
+    primaryVariant: '#3700B3',
+    secondary: '#03DAC6',
+    secondaryVariant: '#018786',
+    background: '#FFFFFF',
+    surface: '#FFFFFF',
+    error: '#B00020',
+    onPrimary: '#FFFFFF',
+    onSecondary: '#000000',
+    onBackgroud: '#000000',
+    onSurface: '#000000',
+    onError: '#FFFFFF'
   },
   darkColors: {
-    primary: '#000'
+    primary: '#BB86FC',
+    primaryVariant: '#3700B3',
+    secondary: '#03DAC6',
+    secondaryVariant: '#03DAC6',
+    background: '#121212',
+    surface: '#FFFFFF',
+    error: '#CF6679',
+    onPrimary: '#000000',
+    onSecondary: '#000000',
+    onBackgroud: '#FFFFFF',
+    onSurface: '#FFFFFF',
+    onError: '#000000'
   },
-  mode: 'ligth'
+  mode: 'light'
 });
 
 export default function App() {
@@ -61,7 +83,7 @@ export default function App() {
       <RootSiblingParent>
         <QueryClientProvider client={queryClient}>
           <NavigationContainer>
-            <StatusBar style="auto" />
+            <StatusBar style="light" />
             <Stack.Navigator>
               <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
               <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />

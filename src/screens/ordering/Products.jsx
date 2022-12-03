@@ -5,6 +5,8 @@ import { FlatList, View } from "react-native";
 import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
+import BarcitoImageBackground from "../../components/BarcitoImageBackground";
+import ProductCard from "../../components/ProductCard";
 
 const Products = () => {
     const { barcito } = useOrdering();
@@ -48,34 +50,27 @@ const Products = () => {
                 value={search}
                 round={true}
             />
-            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                <Text>{params.categoryId === 0 ? 'Esta viendo TODOS los productos' : `Está viendo los productos de la categoria ${params.categoryName}`}</Text>
-                <Button onPress={() => navigation.navigate('Home', { screen: 'Categories' })}>Cambiar</Button>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+                <Text style={{ marginRight: 10, fontSize: 25, fontWeight: 'bold' }}>Categoria '{params.categoryName}'</Text>
+                <Button onPress={() => navigation.navigate('Home', { screen: 'Categories' })} title="Cambiar" />
             </View>
             <FlatList
                 data={productList}
+                numColumns={2}
+                columnWrapperStyle={{
+                    justifyContent: 'center'
+                }}
                 renderItem={({ item }) => {
                     const prodOnCart = isPresent(item.id);
                     return(
-                        <Card>
-                            <Card.Title>{item.description}</Card.Title>
-                            <Card.Image source={{ uri: item.imagePath }} />
-                            <Text>Precio Final: ${item.finalSellPrice}</Text>
-                            <Text>Precio Socio: ${item.associatedSellPrice}</Text>
-                            {prodOnCart ?
-                                (
-                                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                                        <Button onPress={
-                                            () => prodOnCart.quantity > 1 ? handleOnRemove(item.id) : handleOnRemoveAll(item.id)
-                                        }>-</Button>
-                                        <Text>{prodOnCart.quantity}</Text>
-                                        <Button onPress={() => handleOnUpdate(item.id)}>+</Button>
-                                    </View>
-                                )
-                                :
-                                <Button onPress={() => handleOnAdd(item)}>Agregar al pedido</Button>
-                            }
-                        </Card>
+                        <ProductCard
+                            prodOnCart={prodOnCart}
+                            product={item}
+                            handleOnAdd={handleOnAdd}
+                            handleOnRemove={handleOnRemove}
+                            handleOnRemoveAll={handleOnRemoveAll}
+                            handleOnUpdate={handleOnUpdate}
+                        />
                     );
                 }}
                 keyExtractor={(prod) => prod.id}

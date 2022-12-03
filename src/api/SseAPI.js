@@ -13,7 +13,7 @@ export const SseAPI = {
     },
 
     subscribe: function (userId) {
-        const subscription = new EventSource(`http://192.168.0.6:3000/api/sse/orderStatus/${userId}`);
+        const subscription = new EventSource(`http://192.168.0.75:3000/api/sse/orderStatus/${userId}`);
 
         subscription.addEventListener("open", (event) => {
             console.log("SSE connection opened");

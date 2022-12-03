@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { ListItem, SearchBar } from "@rneui/themed";
-import { Alert, FlatList, Pressable, View, Text } from "react-native";
+import { ListItem, SearchBar, Icon, makeStyles } from "@rneui/themed";
+import { Alert, FlatList, Pressable, View, Text, ImageBackground } from "react-native";
 import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
+import BarcitoImageBackground from "../../components/BarcitoImageBackground";
 
 const Categories = () => {
     const { barcito, orderedProducts } = useOrdering();
@@ -12,6 +13,7 @@ const Categories = () => {
     const { data: catList, isLoading } = useQuery(['categories'], async () => BarcitoAPI.getCategories(barcito.id));
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
+    const styles = useStyles();
     
     useEffect( () => {
         if(orderedProducts.length > 0){
@@ -64,21 +66,23 @@ const Categories = () => {
                 value={search}
                 round={true}
             />
-            <Pressable onPress={() => onPressCategory({ id: 0, description: 'TODO'})}>
-                <ListItem style={{ marginBottom: 5 }}>
+            <BarcitoImageBackground barcito={barcito} />
+            <Pressable style={styles.container} onPress={() => onPressCategory({ id: 0, description: 'TODO'})}>
+                <ListItem containerStyle={styles.item} style={{ marginBottom: 5 }}>
                     <ListItem.Content>
-                        <ListItem.Title>Todo</ListItem.Title>
+                        <ListItem.Title style={styles.text}>Todo</ListItem.Title>
                     </ListItem.Content>
                     <ListItem.Chevron />
                 </ListItem>
             </Pressable>
             <FlatList
+                style={styles.container}
                 data={categoriesList}
                 renderItem={({item}) => 
                     <Pressable onPress={() => onPressCategory(item)}>
-                        <ListItem style={{ marginBottom: 5 }}>
+                        <ListItem containerStyle={styles.item} style={{ marginBottom: 5 }}>
                             <ListItem.Content>
-                                <ListItem.Title>{item.description}</ListItem.Title>
+                                <ListItem.Title style={styles.text}>{item.description}</ListItem.Title>
                             </ListItem.Content>
                             <ListItem.Chevron />
                         </ListItem>
@@ -89,5 +93,17 @@ const Categories = () => {
         </>
     );
 }
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        backgroundColor: theme.colors.background
+    },
+    item: {
+        backgroundColor: theme.colors.secondary
+    },
+    text: {
+        color: theme.colors.white
+    }
+}))
 
 export default Categories;

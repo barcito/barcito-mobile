@@ -7,6 +7,7 @@ import { BarcitoAPI } from "../../api/BarcitoAPI";
 import { SseAPI } from "../../api/SseAPI";
 import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import CustomToast from "../../components/CustomToast";
+import BarcitoImageBackground from "../../components/BarcitoImageBackground";
 
 const OrderConfirmation = () => {
     const { barcito, orderedProducts } = useOrdering();
@@ -27,7 +28,7 @@ const OrderConfirmation = () => {
                 await SseAPI.newOrder(barcito.id, {title: `Pedido #${response.code}`, message: 'Se ha generado un nuevo pedido', type: 'message' });
                 onClean();
                 navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos' } });
-                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderList', params: { orderCode: response.code } } });
+                navigation.navigate('Main', { screen: 'OrderHistory', params: { screen: 'OrderDetail', params: { orderCode: response.code } } });
             }
         } catch (e) {
             console.error(e);
@@ -37,17 +38,7 @@ const OrderConfirmation = () => {
 
     return (
         <ScrollView style={{ flex: 1 }}>
-            <ImageBackground
-                source={{ uri: barcito.imagePath }}
-                imageStyle={{ opacity: 0.5 }}
-                style={{ aspectRatio: 3, width: '100%' }}
-            >
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 30 }}>{barcito.name}</Text>
-                    <Text style={{ fontSize: 15 }}><Icon name="location-pin" />Facultad de Informática</Text>
-                </View>
-            </ImageBackground>
-            
+            <BarcitoImageBackground barcito={barcito} />
             <View style={{ margin: 20 }}>
                 {orderedProducts.map( (product, i) => {
                     totalAmount += (product.finalSellPrice * product.quantity);

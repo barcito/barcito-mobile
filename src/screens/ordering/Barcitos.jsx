@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { makeStyles, Tile, SearchBar, Text } from "@rneui/themed";
+import { makeStyles, Tile, SearchBar, Text, Button, Card } from "@rneui/themed";
 import { View, ScrollView, Alert } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useOrderingDispatch } from "../../context/OrderingState";
 import { AuthAPI } from "../../api/AuthAPI";
 import CustomModal from "../../components/CustomModal";
-import { Button } from "@rneui/base";
+import CustomButton from "../../components/CustomButton";
 
 const Barcitos = () => {
     const styles = useStyles();
@@ -56,54 +56,63 @@ const Barcitos = () => {
     const barcitoList = search === '' ? barList : barList.filter((bar) => bar.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <>
+        <View style={styles.screenContainer}>
             <SearchBar
                 placeholder="Buscar barcito"
                 onChangeText={updateSearch}
                 value={search}
                 round={true}
             />
-            <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 { barcitoList.map((bar, i)=> {
                     return (
-                        <View key={bar.id} style={{ backgroundColor: 'black' }}>
+                        <Card containerStyle={{ width: '80%', height: 500 }} wrapperStyle={{ height: '100%' }}>
+                            <Card.FeaturedTitle style={{color: 'red'}}>{bar.name}</Card.FeaturedTitle>
+                            <Card.FeaturedSubtitle style={{color: 'red'}}>{bar.name}</Card.FeaturedSubtitle>
+                            <Card.Image source={{ uri: bar.imagePath }} resizeMethod='resize' resizeMode='cover' style={{ height: '85%' }} />
+                            <CustomButton buttonStyle={styles.buttonStyle} title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
+                        </Card>
+                        /* <View key={bar.id} style={styles.tileContainer}>
                             <Tile
                                 imageSrc={{ uri: bar.imagePath }}
-                                title={bar.name}
-                                titleStyle={{ color: 'white', fontSize: 20, textAlign: 'center' }}
+                                title={`${bar.name}, ${bar.academicUnit.description}`}
+                                titleStyle={styles.tileTitle}
                                 onPress={() => onTilePress(bar)}
                             />
-                            <View style={styles.barFooter}>
-                                <Text style={styles.barName}>{bar.academicUnit.description}</Text>
-                                <Button title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
-                            </View>
-                        </View>
+                            <CustomButton title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
+                        </View> */
                     );
                 })
                 }
             </ScrollView>
             <CustomModal isVisible={showMap} setIsVisible={setShowMap} barcito={barMap} />
-        </>
+        </View>
     );
 }
 
 const useStyles = makeStyles((theme) => ({
-    container: {
-        flex: 1,
+    contentContainer: {
+        paddingBottom: 80,
+        alignItems: 'center',
     },
-    barTile: {
-        width: '90%',
-        height: 200,
-        backgroundColor: 'red',
-        margin: 10
+    tileContainer: {
+        width: '100%',
+        borderWidth: 5
     },
-    barFooter: {
-        justifyContent: 'space-around'
+    tileTitle: {
+        color: theme.colors.onBackgroud,
+        fontSize: 20,
+        textAlign: 'center'
     },
-    barName: {
+    tileDescription: {
         textAlign: 'center',
         fontSize: 15,
-        color: 'white'
+        color: theme.colors.onBackgroud
+    },
+    buttonStyle: {
+        backgroundColor: theme.colors.secondary,
+        width: '50%',
+        alignSelf: 'center'
     }
 }));
 
