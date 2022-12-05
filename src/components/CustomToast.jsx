@@ -8,7 +8,7 @@ const CustomToast = (message) => {
         animation: true,
         hideOnPress: true,
         delay: 0,
-        textColor: 'red'
+        textColor: 'white'
     });
 }
 

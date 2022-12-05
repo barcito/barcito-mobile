@@ -1,4 +1,4 @@
-import { View, Text, Button, StyleSheet, Pressable, ScrollView } from "react-native"
+import { View, Pressable } from "react-native"
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
@@ -6,10 +6,11 @@ import CustomInput from "../../components/CustomInput";
 import SelectInput from "../../components/SelectInput";
 import CustomToast from "../../components/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
-import { Image } from "@rneui/themed";
+import { Image, Button, Text, makeStyles } from "@rneui/themed";
 
 const Register = () => {
     const navigation = useNavigation();
+    const styles = useStyles();
 
     const handleSignUp = async (userData) => {
         try {
@@ -54,13 +55,13 @@ const Register = () => {
     })
 
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Text style={{ fontSize: 50, fontStyle: 'italic', padding: 10 }}>Barcito</Text>
                 <Image source={require('../../../assets/barcito-big.png')} style={{ width: 400, height: 200 }}/>
             </View>
             <View style={styles.signUpContainer}>
-                <Text>Registrarse</Text>
+                <Text style={styles.text}>Registrarse</Text>
                 <Formik 
                     initialValues={{
                         name: '',
@@ -116,7 +117,7 @@ const Register = () => {
                             />
                             <Button onPress={handleSubmit} title='Registrarme' disabled={!isValid} />
                             <Pressable style={{ margin: 10 }} onPress={() => navigation.navigate('Auth', { screen: 'Login' })} >
-                                <Text>Ya tengo una cuenta</Text>
+                                <Text style={styles.link}>Ya tengo una cuenta</Text>
                             </Pressable>
                         </>
                     )}
@@ -126,7 +127,11 @@ const Register = () => {
     );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
+    container: {
+        backgroundColor: theme.colors.background,
+        height: '100%'
+    },
     imageContainer: {
         height: '35%',
         justifyContent: 'center',
@@ -139,8 +144,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         elevation: 10,
-        backgroundColor: '#e6e6e6'
+        backgroundColor: theme.colors.backgroundVariant,
+        borderRadius: 10
+    },
+    text: {
+        fontSize: 20
+    },
+    link: {
+        color: theme.colors.primary,
+        textDecorationLine: 'underline',
+        fontSize: 15
     }
-})
+}))
 
 export default Register;

@@ -6,7 +6,7 @@ import MainNavigator from './src/navigation/Main.Navigator';
 import 'react-native-gesture-handler';
 import { RootSiblingParent } from 'react-native-root-siblings';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider ,createTheme } from '@rneui/themed';
+import { ThemeProvider ,createTheme, darkColors } from '@rneui/themed';
 import * as Notifications from 'expo-notifications';
 import { useState, useRef, useEffect } from 'react';
 import { registerForPushNotificationsAsync } from './src/utils/notifications';
@@ -29,10 +29,11 @@ const theme = createTheme({
     secondaryVariant: '#018786',
     background: '#FFFFFF',
     surface: '#FFFFFF',
+    warning: '#EED202',
     error: '#B00020',
     onPrimary: '#FFFFFF',
     onSecondary: '#000000',
-    onBackgroud: '#000000',
+    onBackground: '#000000',
     onSurface: '#000000',
     onError: '#FFFFFF'
   },
@@ -42,15 +43,17 @@ const theme = createTheme({
     secondary: '#03DAC6',
     secondaryVariant: '#03DAC6',
     background: '#121212',
+    backgroundVariant: '#434242',
     surface: '#FFFFFF',
+    warning: '#EED202',
     error: '#CF6679',
     onPrimary: '#000000',
     onSecondary: '#000000',
-    onBackgroud: '#FFFFFF',
+    onBackground: '#FFFFFF',
     onSurface: '#FFFFFF',
     onError: '#000000'
   },
-  mode: 'light'
+  mode: 'dark'
 });
 
 export default function App() {

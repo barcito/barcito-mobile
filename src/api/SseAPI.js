@@ -13,7 +13,7 @@ export const SseAPI = {
     },
 
     subscribe: function (userId) {
-        const subscription = new EventSource(`http://192.168.0.75:3000/api/sse/orderStatus/${userId}`);
+        const subscription = new EventSource(`http://192.168.0.7:3000/api/sse/orderStatus/${userId}`);
 
         subscription.addEventListener("open", (event) => {
             console.log("SSE connection opened");
@@ -54,5 +54,13 @@ export const SseAPI = {
         subscription.addEventListener("close", (event) => {
             console.log("Close SSE connection.");
         });
+    },
+    
+    unsubscribe: async function(userId) {
+        await api.request({
+            url: `http://192.168.0.7:3000/api/sse/orderStatus/${userId}`,
+            method: "POST",
+            data: { title: 'Close', message: 'Closing connection', type: 'close' }
+        })
     }
 }

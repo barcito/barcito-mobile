@@ -2,9 +2,9 @@ import { makeStyles } from "@rneui/themed";
 
 const useHeaderStyles = makeStyles((theme) => ({
     header: {
-        backgroundColor: theme.mode === 'light' ? theme.colors.primary : theme.colors.background
+        backgroundColor: theme.colors.backgroundVariant
     },
-    headerTint: theme.mode === 'light' ? theme.colors.onPrimary : theme.colors.onBackgroud,
+    headerTint: theme.colors.onBackground,
     headerTitle: {
         fontWeight: 'bold',
     }

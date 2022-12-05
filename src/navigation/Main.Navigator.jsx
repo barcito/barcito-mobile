@@ -32,7 +32,8 @@ const MainNavigator = () =>{
                 },
                 headerShown: false,
                 tabBarStyle: styles.tabBar,
-                tabBarActiveTintColor: styles.tabBarTint
+                tabBarInactiveTintColor: styles.tabBarInactive,
+                tabBarActiveTintColor: styles.tabBarActive
             })}>
                 <Tabs.Screen name="Profile" component={ProfileNavigator} options={{ title: 'Perfil' }} />
                 <Tabs.Screen name="Home" component={OrderingNavigator} />
@@ -44,9 +45,9 @@ const MainNavigator = () =>{
 
 const useStyles = makeStyles((theme) => ({
     tabBar: {
-        backgroundColor: theme.colors.primary
+        backgroundColor: theme.colors.backgroundVariant
     },
-    tabBarTint: theme.colors.white
+    tabBarActive: theme.colors.primary
 }));
 
 export default MainNavigator;

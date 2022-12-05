@@ -6,6 +6,7 @@ import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 import BarcitoImageBackground from "../../components/BarcitoImageBackground";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const Categories = () => {
     const { barcito, orderedProducts } = useOrdering();
@@ -51,7 +52,7 @@ const Categories = () => {
     };
 
     if(isLoading){
-        return <View><Text>Is Loading</Text></View>;
+        return <LoadingScreen />;
     }
     
     const cates = catList.filter( (cat) => cat.barcitoId === barcito.id );
@@ -65,14 +66,17 @@ const Categories = () => {
                 onChangeText={updateSearch}
                 value={search}
                 round={true}
+                containerStyle={styles.searchBarContainer}
+                inputStyle={styles.searchInput}
+                cursorColor={styles.searchCursor}
             />
             <BarcitoImageBackground barcito={barcito} />
             <Pressable style={styles.container} onPress={() => onPressCategory({ id: 0, description: 'TODO'})}>
-                <ListItem containerStyle={styles.item} style={{ marginBottom: 5 }}>
+                <ListItem containerStyle={styles.item} style={{ padding: 5 }}>
                     <ListItem.Content>
                         <ListItem.Title style={styles.text}>Todo</ListItem.Title>
                     </ListItem.Content>
-                    <ListItem.Chevron />
+                    <ListItem.Chevron color={styles.chevron} />
                 </ListItem>
             </Pressable>
             <FlatList
@@ -80,11 +84,11 @@ const Categories = () => {
                 data={categoriesList}
                 renderItem={({item}) => 
                     <Pressable onPress={() => onPressCategory(item)}>
-                        <ListItem containerStyle={styles.item} style={{ marginBottom: 5 }}>
+                        <ListItem containerStyle={styles.item} style={{ padding: 5 }}>
                             <ListItem.Content>
                                 <ListItem.Title style={styles.text}>{item.description}</ListItem.Title>
                             </ListItem.Content>
-                            <ListItem.Chevron />
+                            <ListItem.Chevron color={styles.chevron} />
                         </ListItem>
                     </Pressable>
                 }
@@ -95,15 +99,24 @@ const Categories = () => {
 }
 
 const useStyles = makeStyles((theme) => ({
+    searchBarContainer: {
+        backgroundColor: theme.colors.backgroundVariant
+    },
+    searchInput: {
+        color: theme.colors.onBackground
+    },
+    searchCursor: theme.colors.primary,
     container: {
         backgroundColor: theme.colors.background
     },
     item: {
-        backgroundColor: theme.colors.secondary
+        backgroundColor: theme.colors.backgroundVariant
     },
     text: {
-        color: theme.colors.white
-    }
+        color: theme.colors.onBackground,
+        fontWeight: 'bold'
+    },
+    chevron: theme.colors.onBackground
 }))
 
 export default Categories;

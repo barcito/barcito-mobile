@@ -1,11 +1,14 @@
-import { useCallback, useState } from "react";
-import { View, Text, Button } from "react-native";
+import { useState } from "react";
+import { View } from "react-native";
 import * as DocumentPicker from 'expo-document-picker';
 import { UserAPI } from "../../api/UserAPI";
 import CustomToast from "../../components/CustomToast";
+import { Button, Text, makeStyles } from "@rneui/themed";
+import { useNavigation } from "@react-navigation/native";
 
 const Associate = () => {
-
+    const navigation = useNavigation();
+    const styles = useStyles();
     const [selectedDoc, setSelectedDoc] = useState({ type: 'none' });
     
     const pickDoc = async () => {
@@ -27,8 +30,11 @@ const Associate = () => {
             });
             const response = await UserAPI.uploadDocument(formData);
             if(response){
-                CustomToast('Guardado exitoso!');
+                CustomToast('Certificado Enviado!');
                 setSelectedDoc({ type: 'none' });
+                setTimeout(() => {
+                    navigation.goBack();
+                }, 3000)
             }
         } catch (e) {
             CustomToast(e);
@@ -36,15 +42,35 @@ const Associate = () => {
     }
 
     return (
-        <View>
-            <Text>Associate</Text>
+        <View style={styles.container}>
+            <Text style={styles.text}>Asociate al barcito de tu unidad academica para aprovechar de precios rebajados e importantes beneficios!</Text>
+            <Text style={styles.text}>Solo debes esperar a que te validen subiendo tu certificado de alumno regular (en formato PDF):</Text>
             <Button
+                containerStyle={styles.pickerButton}
                 title="Seleccionar archivo"
                 onPress={pickDoc}
             />
-            <Button title="guardar" disabled={selectedDoc.type === 'none' || selectedDoc.type === 'cancel' } onPress={ () => handleSave() } />
+            <Button title="Enviar" disabled={selectedDoc.type === 'none' || selectedDoc.type === 'cancel' } onPress={ () => handleSave() } />
         </View>
     );
-}
+};
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        height: '100%',
+        backgroundColor: theme.colors.background,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    text: {
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 15
+    },
+    pickerButton: {
+        marginBottom: 15
+    }
+}));
 
 export default Associate;

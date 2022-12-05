@@ -4,12 +4,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Welcome from "../screens/auth/Welcome";
 import Login from '../screens/auth/Login';
 import Register from "../screens/auth/Register";
+import useHeaderStyles from "../components/style/useHeaderStyle";
 
 const Stack = createNativeStackNavigator();
 
 const AuthNavigator = () => {
 
     const [firstLaunch, setFirstLaunch] = useState(null);
+    const styles = useHeaderStyles();
 
     useEffect(() => {
       async function setData() {
@@ -27,7 +29,11 @@ const AuthNavigator = () => {
     
     return(
         firstLaunch != null && (
-            <Stack.Navigator>
+            <Stack.Navigator screenOptions={{
+              headerStyle: styles.header,
+              headerTintColor: styles.headerTint,
+              headerTitleStyle: styles.headerTitle
+            }}>
                 {firstLaunch && (
                     <Stack.Screen
                         name="Welcome"

@@ -1,46 +1,51 @@
-import { StyleSheet, View } from "react-native";
-import { Card, Text, Button } from "@rneui/themed";
+import { View } from "react-native";
+import { Card, Text, Button, makeStyles, Icon } from "@rneui/themed";
+import QuantityCounter from "./QuantityCounter";
 
 const ProductCard = ({ prodOnCart, product, handleOnAdd, handleOnRemove, handleOnRemoveAll, handleOnUpdate }) => {
+
+    const styles = useStyles();
+
     return(
         <Card containerStyle={styles.card}>
             <Card.Title style={styles.title}>{product.description}</Card.Title>
             <Card.Image style={styles.image} source={{ uri: product.imagePath }} />
-            <Text style={styles.price}>Precio Final: ${product.finalSellPrice}</Text>
+            <Text style={styles.price}>Precio Regular: ${product.finalSellPrice}</Text>
             <Text style={styles.price}>Precio Socio: ${product.associatedSellPrice}</Text>
             {prodOnCart ?
-                (
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <Button onPress={
-                            () => prodOnCart.quantity > 1 ? handleOnRemove(product.id) : handleOnRemoveAll(product.id)
-                        }>-</Button>
-                        <Text>{prodOnCart.quantity}</Text>
-                        <Button onPress={() => handleOnUpdate(product.id)}>+</Button>
-                    </View>
-                )
+                <QuantityCounter
+                    prodOnCart={prodOnCart}
+                    handleOnRemove={handleOnRemove}
+                    handleOnRemoveAll={handleOnRemoveAll}
+                    handleOnUpdate={handleOnUpdate}
+                />
                 :
-                <Button onPress={() => handleOnAdd(product)}>Agregar al pedido</Button>
+                <Button containerStyle={{ marginTop: 10 }} onPress={() => handleOnAdd(product)}>Agregar al pedido</Button>
             }
         </Card>
     )
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
     card: {
-        width: '45%'
+        width: '45%',
+        backgroundColor: theme.colors.backgroundVariant,
+        borderRadius: 10
     },
     title: {
         fontSize: 20,
-        fontWeight: '700'
+        fontWeight: '700',
+        color: theme.colors.onBackground
     },
     image: {
-        resizeMode: 'center'
+        resizeMode: 'contain',
+        marginBottom: 10
     },
     price: {
-        fontSize: 16,
+        fontSize: 20,
         fontWeight: '600',
         textAlign: 'center'
     }
-})
+}));
 
 export default ProductCard;

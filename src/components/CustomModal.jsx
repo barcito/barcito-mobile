@@ -1,6 +1,7 @@
 import { Button } from "@rneui/base";
 import { Modal, View, StyleSheet, Text } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
+import CustomButton from "./CustomButton";
 
 const CustomModal = ({ isVisible, setIsVisible, barcito }) => {
 
@@ -9,7 +10,7 @@ const CustomModal = ({ isVisible, setIsVisible, barcito }) => {
             {barcito && <View style={styles.modalContent}>
                 <View style={styles.title}>
                     <Text style={styles.textTitle}>{barcito.name}</Text>
-                    <Button title={'Cerrar'} onPress={() => setIsVisible(false)} />
+                    <CustomButton title={'Cerrar'} onPress={() => setIsVisible(false)} />
                 </View>
                 <View style={{ flex: 1 }}>
                     <MapView
@@ -54,7 +55,8 @@ const styles = StyleSheet.create({
     },
     textTitle: {
         color: 'white',
-        fontSize: 20
+        fontSize: 25,
+        fontWeight: 'bold'
     },
     map: {
         width: '100%',

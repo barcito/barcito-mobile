@@ -30,6 +30,13 @@ export const AuthAPI = {
             await AsyncStorage.setItem("email", response.data.email);
             await AsyncStorage.setItem("academic-unit", `${response.data.academicUnit}`);
             SseAPI.subscribe(response.data.id);
+            if(response.data.application){
+                if(response.data.application.status === 'Aceptado'){
+                    await AsyncStorage.setItem("associated", "valid");
+                }else{
+                    await AsyncStorage.setItem("associated", "invalid");
+                }
+            }
         }
 
         return response.data;
@@ -38,11 +45,7 @@ export const AuthAPI = {
     signOut: async function () {
         const userId = await AsyncStorage.getItem('user-id');
         await AsyncStorage.clear()
-        await api.request({
-            url: `http://192.168.0.75:3000/api/sse/orderStatus/${userId}`,
-            method: "POST",
-            data: { message: 'Closing connection', type: 'close' }
-        })
+        await SseAPI.unsubscribe(userId);
         await api.request({
           url: "auth/logout",
           method: "GET"

@@ -1,3 +1,4 @@
+import { makeStyles } from '@rneui/themed';
 import { Text, TextInput, StyleSheet } from 'react-native';
 
 const CustomInput = (props) => {
@@ -6,6 +7,8 @@ const CustomInput = (props) => {
     form: { errors, touched, setFieldTouched },
     ...inputProps
   } = props;
+
+  const styles = useStyles();
 
   const hasError = errors[name] && touched[name];
 
@@ -29,24 +32,24 @@ const CustomInput = (props) => {
   );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
   textInput: {
     height: 40,
     width: '100%',
     margin: 10,
     padding: 10,
     backgroundColor: 'white',
-    borderColor: 'gray',
-    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: 'white',
+    borderWidth: 2,
     borderRadius: 10,
   },
   errorText: {
-    fontSize: 10,
+    fontSize: 15,
     color: 'red',
   },
   errorInput: {
     borderColor: 'red',
   }
-});
+}));
 
 export default CustomInput;

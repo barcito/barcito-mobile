@@ -1,14 +1,15 @@
-import { View, Text, Button, Pressable, StyleSheet } from "react-native";
+import { View, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Formik, Field } from "formik";
 import * as yup from 'yup';
 import CustomInput from "../../components/CustomInput";
 import CustomToast from "../../components/CustomToast";
 import { AuthAPI } from "../../api/AuthAPI";
-import { Image } from "@rneui/themed";
+import { Image, makeStyles, Text, Button } from "@rneui/themed";
 
 const Login = () => {
     const navigation = useNavigation();
+    const styles = useStyles();
 
     const handleLogin = async (credentials) => {
         try {
@@ -17,7 +18,7 @@ const Login = () => {
                 navigation.navigate('Main', { screen: 'Home', params: { screen: 'Barcitos '} });
             }
         } catch (e) {
-            CustomToast(e.message);
+            CustomToast(e);
         }
     }
 
@@ -32,13 +33,13 @@ const Login = () => {
     })
 
     return (
-        <View>
+        <View style={styles.container}>
             <View style={styles.imageContainer}>
                 <Text style={{ fontSize: 50, fontStyle: 'italic', padding: 10 }}>Barcito</Text>
                 <Image source={require('../../../assets/barcito-big.png')} style={{ width: 400, height: 200 }}/>
             </View>
             <View style={styles.loginContainer}>
-                <Text>Iniciar sesión</Text>
+                <Text style={styles.text}>Iniciar sesión</Text>
                 <Formik
                     initialValues={{
                         email: 'uno@cliente.com',
@@ -63,7 +64,7 @@ const Login = () => {
                             />
                             <Button onPress={handleSubmit} title="Login" disabled={!isValid} />
                             <Pressable style={{ margin: 10 }} onPress={() => navigation.navigate('Auth', { screen: 'Register' })}>
-                                <Text>No tengo una cuenta</Text>
+                                <Text style={styles.link}>No tengo una cuenta</Text>
                             </Pressable>
                         </>
                     )}
@@ -73,7 +74,11 @@ const Login = () => {
     );
 }
 
-const styles = StyleSheet.create({
+const useStyles = makeStyles((theme) => ({
+    container: {
+        height: '100%',
+        backgroundColor: theme.colors.background
+    },
     imageContainer: {
         height: '50%',
         justifyContent: 'center',
@@ -83,12 +88,19 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '80%',
         alignItems: 'center',
-        backgroundColor: 'white',
-        marginTop: 50,
         padding: 10,
         elevation: 10,
-        backgroundColor: '#e6e6e6'
+        backgroundColor: theme.colors.backgroundVariant,
+        borderRadius: 10
+    },
+    text: {
+        fontSize: 20
+    },
+    link: {
+        color: theme.colors.primary,
+        textDecorationLine: 'underline',
+        fontSize: 15
     }
-})
+}));
 
 export default Login;

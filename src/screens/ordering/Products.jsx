@@ -1,12 +1,13 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useState } from "react";
-import { Card, SearchBar, Text, Button } from "@rneui/themed";
+import { Card, SearchBar, Text, Button, makeStyles } from "@rneui/themed";
 import { FlatList, View } from "react-native";
 import { OrderingContext, useOrdering, useOrderingDispatch } from "../../context/OrderingState";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 import BarcitoImageBackground from "../../components/BarcitoImageBackground";
 import ProductCard from "../../components/ProductCard";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const Products = () => {
     const { barcito } = useOrdering();
@@ -15,6 +16,7 @@ const Products = () => {
     const { data: prodList, isLoading } = useQuery(['products'], async () => BarcitoAPI.getProductsByCategory(barcito.id, params.categoryId) );
     const [search, setSearch] = useState('');
     const navigation = useNavigation();
+    const styles = useStyles();
 
     const updateSearch = (searchValue) => {
         setSearch(searchValue);
@@ -37,21 +39,24 @@ const Products = () => {
     }
 
     if(isLoading){
-        return <View><Text>Is Loading</Text></View>;
+        return <LoadingScreen />;
     }
 
     const productList = search === '' ? prodList : prodList.filter((prod) => prod.description.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <>
+        <View style={styles.container}>
             <SearchBar
                 placeholder="Buscar producto"
                 onChangeText={updateSearch}
                 value={search}
                 round={true}
+                containerStyle={styles.searchBarContainer}
+                inputStyle={styles.searchInput}
+                cursorColor={styles.searchCursor}
             />
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
-                <Text style={{ marginRight: 10, fontSize: 25, fontWeight: 'bold' }}>Categoria '{params.categoryName}'</Text>
+            <View style={styles.categoryLabel}>
+                <Text style={styles.categoryLabelText}>Categoria '{params.categoryName}'</Text>
                 <Button onPress={() => navigation.navigate('Home', { screen: 'Categories' })} title="Cambiar" />
             </View>
             <FlatList
@@ -75,8 +80,34 @@ const Products = () => {
                 }}
                 keyExtractor={(prod) => prod.id}
             />
-        </>
+        </View>
     );
-}
+};
+
+const useStyles = makeStyles((theme) => ({
+    searchBarContainer: {
+        backgroundColor: theme.colors.backgroundVariant
+    },
+    searchInput: {
+        color: theme.colors.onBackground
+    },
+    searchCursor: theme.colors.primary,
+    container: {
+        height: '100%',
+        backgroundColor: theme.colors.background
+    },
+    categoryLabel: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    categoryLabelText: {
+        color: theme.colors.onBackground,
+        marginRight: 10,
+        fontSize: 25,
+        fontWeight: 'bold'
+    }
+}));
 
 export default Products;

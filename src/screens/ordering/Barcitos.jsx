@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import { makeStyles, Tile, SearchBar, Text, Button, Card } from "@rneui/themed";
-import { View, ScrollView, Alert } from "react-native";
+import { makeStyles, Tile, SearchBar, Text, Button, Card, Image } from "@rneui/themed";
+import { View, ScrollView, Alert, Pressable } from "react-native";
 import { useQuery } from "react-query";
 import { BarcitoAPI } from "../../api/BarcitoAPI";
 import { useState, useEffect } from "react";
@@ -8,6 +8,7 @@ import { useOrderingDispatch } from "../../context/OrderingState";
 import { AuthAPI } from "../../api/AuthAPI";
 import CustomModal from "../../components/CustomModal";
 import CustomButton from "../../components/CustomButton";
+import LoadingScreen from "../../components/LoadingScreen";
 
 const Barcitos = () => {
     const styles = useStyles();
@@ -50,69 +51,92 @@ const Barcitos = () => {
     }
 
     if(isLoading){
-        return (<View><Text>Loading...</Text></View>);
+        return <LoadingScreen />;
     }
 
     const barcitoList = search === '' ? barList : barList.filter((bar) => bar.name.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <View style={styles.screenContainer}>
+        <>
             <SearchBar
                 placeholder="Buscar barcito"
                 onChangeText={updateSearch}
                 value={search}
                 round={true}
+                containerStyle={styles.searchBarContainer}
+                inputStyle={styles.searchInput}
+                cursorColor={styles.searchCursor}
             />
-            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            <ScrollView contentContainerStyle={styles.scrollViewContainer}>
                 { barcitoList.map((bar, i)=> {
                     return (
-                        <Card containerStyle={{ width: '80%', height: 500 }} wrapperStyle={{ height: '100%' }}>
-                            <Card.FeaturedTitle style={{color: 'red'}}>{bar.name}</Card.FeaturedTitle>
-                            <Card.FeaturedSubtitle style={{color: 'red'}}>{bar.name}</Card.FeaturedSubtitle>
-                            <Card.Image source={{ uri: bar.imagePath }} resizeMethod='resize' resizeMode='cover' style={{ height: '85%' }} />
-                            <CustomButton buttonStyle={styles.buttonStyle} title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
-                        </Card>
-                        /* <View key={bar.id} style={styles.tileContainer}>
-                            <Tile
-                                imageSrc={{ uri: bar.imagePath }}
-                                title={`${bar.name}, ${bar.academicUnit.description}`}
-                                titleStyle={styles.tileTitle}
-                                onPress={() => onTilePress(bar)}
-                            />
-                            <CustomButton title='Ver en mapa' onPress={() => {setShowMap(true); setBarMap(bar)}} />
-                        </View> */
+                        <Pressable key={bar.id} style={styles.pressable} onPress={() => onTilePress(bar)}>
+                            <View style={styles.barCard}>
+                                <Image source={{ uri: bar.imagePath }} containerStyle={styles.imageContainer} resizeMode="cover"/>
+                                <Text style={styles.titleText}>{bar.name}</Text>
+                                <Text style={styles.subtitleText}>{bar.academicUnit.description}</Text>
+                                <CustomButton
+                                    title='Ver en mapa'
+                                    containerStyle={styles.buttonContainer}
+                                    onPress={() => {setShowMap(true); setBarMap(bar)}}
+                                />
+                            </View>
+                        </Pressable>
                     );
                 })
                 }
             </ScrollView>
             <CustomModal isVisible={showMap} setIsVisible={setShowMap} barcito={barMap} />
-        </View>
+        </>
     );
 }
 
 const useStyles = makeStyles((theme) => ({
-    contentContainer: {
-        paddingBottom: 80,
-        alignItems: 'center',
+    searchBarContainer: {
+        backgroundColor: theme.colors.backgroundVariant
     },
-    tileContainer: {
+    searchInput: {
+        color: theme.colors.onBackground
+    },
+    searchCursor: theme.colors.primary,
+    scrollViewContainer: {
+        backgroundColor: theme.colors.background,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    pressable: {
+        width: '85%'
+    },
+    barCard: {
+        height: 400,
+        marginVertical: 15,
+        backgroundColor: theme.colors.backgroundVariant,
+        borderRadius: 10,
+        padding: 10
+    },
+    imageContainer: {
         width: '100%',
-        borderWidth: 5
+        height: '75%',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        marginBottom: 5
     },
-    tileTitle: {
-        color: theme.colors.onBackgroud,
+    titleText: {
         fontSize: 20,
-        textAlign: 'center'
-    },
-    tileDescription: {
         textAlign: 'center',
-        fontSize: 15,
-        color: theme.colors.onBackgroud
+        fontWeight: 'bold',
+        color: theme.colors.onBackground
     },
-    buttonStyle: {
-        backgroundColor: theme.colors.secondary,
+    subtitleText: {
+        fontSize: 15,
+        textAlign: 'center',
+        color: theme.colors.onBackground,
+        marginBottom: 5
+    },
+    buttonContainer: {
         width: '50%',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderRadius: 5
     }
 }));
 

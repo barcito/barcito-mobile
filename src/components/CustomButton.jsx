@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         color: theme.colors.onSecondary
     },
     background: {
-        backgroundColor: theme.colors.secondary
+        backgroundColor: theme.colors.primary
     }
 }));
 
